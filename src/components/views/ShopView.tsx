@@ -366,16 +366,16 @@ export function ShopView({
         </div>
       </div>
 
+      {/* Semi-transparent Half-Screen Backdrop for Mobile Side Drawer */}
+      <div
+        className={`filter-backdrop ${filtersOpen ? "open" : ""}`}
+        onClick={() => setFiltersOpen(false)}
+        aria-hidden="true"
+      />
+
       {/* Main Catalog Layout with Sticky Filters Sidebar */}
       <div className="catalog-layout">
-        {/* Semi-transparent Half-Screen Backdrop for Side Drawer */}
-        <div
-          className={`filter-backdrop ${filtersOpen ? "open" : ""}`}
-          onClick={() => setFiltersOpen(false)}
-          aria-hidden="true"
-        />
-
-        {/* Half-Screen Side Filter Drawer */}
+        {/* Sticky Filters Sidebar on PC / Half-Screen Drawer on Mobile */}
         <aside className={`filters ${filtersOpen ? "open" : ""}`}>
           {/* Sidebar Top Header with Reset All */}
           <div className="filters-sidebar-header">
