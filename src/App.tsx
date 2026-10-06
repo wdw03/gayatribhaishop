@@ -168,7 +168,13 @@ export function App() {
         {view === "admin" && <AdminView />}
       </main>
       {!["checkout", "admin"].includes(view) && <Footer go={go} />}
-      <MobileNav view={view} go={go} cartCount={cart.length} />
+      <MobileNav
+        view={view}
+        go={go}
+        cartCount={cart.reduce((n, i) => n + i.quantity, 0)}
+        wishlistCount={wishlist.length}
+        onSearchOpen={() => setSearchOpen(true)}
+      />
       {searchOpen && (
         <SearchOverlay
           query={query}
