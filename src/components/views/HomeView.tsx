@@ -1,5 +1,5 @@
 import { products } from "../../products"
-import type { Product, View } from "../../types"
+import type { BlogPost, Product, View } from "../../types"
 import Button from "../common/Button"
 import Icon from "../common/Icon"
 import SectionTitle from "../common/SectionTitle"
@@ -15,6 +15,7 @@ export interface HomeViewProps {
   wishlist: string[]
   toggleWish: (id: string) => void
   addToCart: (p: Product) => void
+  onOpenArticle?: (post: BlogPost) => void
 }
 
 export function HomeView({
@@ -23,6 +24,7 @@ export function HomeView({
   wishlist,
   toggleWish,
   addToCart,
+  onOpenArticle,
 }: HomeViewProps) {
   return (
     <>
@@ -180,7 +182,7 @@ export function HomeView({
       </section>
 
       {/* SEO & Craft Storytelling: Journal Blog Preview */}
-      <BlogPreviewSection go={go} />
+      <BlogPreviewSection go={go} onOpenArticle={onOpenArticle} />
 
       <section className="reviews">
         <span className="eyebrow">Worn & Loved</span>

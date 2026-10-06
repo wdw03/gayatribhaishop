@@ -1,22 +1,52 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { BLOG_POSTS } from "../../data/blogData"
 import { products } from "../../products"
 import type { BlogPost, Product, View } from "../../types"
 import { money } from "../../utils/format"
 import Button from "../common/Button"
 import Icon from "../common/Icon"
-import Modal from "../common/Modal"
 
 export interface BlogViewProps {
   go: (v: View) => void
   openProduct: (p: Product) => void
   addToCart: (p: Product) => void
+  selectedBlogId?: string | null
+  setSelectedBlogId?: (id: string | null) => void
 }
 
-export function BlogView({ go, openProduct, addToCart }: BlogViewProps) {
+export function BlogView({
+  go,
+  openProduct,
+  addToCart,
+  selectedBlogId,
+  setSelectedBlogId,
+}: BlogViewProps) {
   const [selectedCategory, setSelectedCategory] = useState<string>("All Essays")
-  const [activeArticle, setActiveArticle] = useState<BlogPost | null>(null)
+  const [activeArticle, setActiveArticle] = useState<BlogPost | null>(() => {
+    if (selectedBlogId) {
+      return BLOG_POSTS.find((p) => p.id === selectedBlogId) || null
+    }
+    return null
+  })
   const [copied, setCopied] = useState(false)
+
+  // Sync when selectedBlogId changes from outside (e.g. from Home page click)
+  useEffect(() => {
+    if (selectedBlogId) {
+      const match = BLOG_POSTS.find((p) => p.id === selectedBlogId)
+      if (match) {
+        setActiveArticle(match)
+        window.scrollTo({ top: 0, behavior: "smooth" })
+      }
+    }
+  }, [selectedBlogId])
+
+  // Scroll to top whenever a new article is opened
+  useEffect(() => {
+    if (activeArticle) {
+      window.scrollTo({ top: 0, behavior: "smooth" })
+    }
+  }, [activeArticle?.id])
 
   const categories = [
     "All Essays",
@@ -39,9 +69,296 @@ export function BlogView({ go, openProduct, addToCart }: BlogViewProps) {
     setTimeout(() => setCopied(false), 2200)
   }
 
+  const handleCloseArticle = () => {
+    setActiveArticle(null)
+    if (setSelectedBlogId) setSelectedBlogId(null)
+    window.scrollTo({ top: 0, behavior: "smooth" })
+  }
+
+  // =========================================================================
+  // 1. FULL PAGE ARTICLE READER VIEW
+  // =========================================================================
+  if (activeArticle) {
+    const currentIndex = BLOG_POSTS.findIndex((p) => p.id === activeArticle.id)
+    const prevPost = currentIndex > 0 ? BLOG_POSTS[currentIndex - 1] : null
+    const nextPost = currentIndex < BLOG_POSTS.length - 1 ? BLOG_POSTS[currentIndex + 1] : null
+
+    return (
+      <div className="full-page-article-view">
+        {/* Sticky/Top Article Breadcrumb Bar */}
+        <nav className="article-top-nav-bar" aria-label="Article navigation">
+          <div className="reader-nav-left">
+            <button
+              type="button"
+              className="reader-back-btn"
+              onClick={handleCloseArticle}
+            >
+              <Icon name="arrow-left" size={13} />
+              <span>Back to all essays</span>
+            </button>
+            <div className="reader-breadcrumbs">
+              <button type="button" onClick={() => go("home")}>
+                Home
+              </button>
+              <span className="crumb-sep">/</span>
+              <button type="button" onClick={handleCloseArticle}>
+                Journal
+              </button>
+              <span className="crumb-sep">/</span>
+              <span className="crumb-current">{activeArticle.title}</span>
+            </div>
+          </div>
+
+          <div className="reader-nav-right">
+            <span className="reader-meta-pill">
+              <Icon name="clock" size={12} /> {activeArticle.readTime}
+            </span>
+            <button
+              type="button"
+              className="reader-share-btn"
+              onClick={handleCopyLink}
+              title="Share essay"
+            >
+              <Icon name="share" size={13} />
+              <span>{copied ? "Copied! ✓" : "Share"}</span>
+            </button>
+          </div>
+        </nav>
+
+        {/* Main Article Content */}
+        <article className="full-article-content-wrapper">
+          {/* Header Metadata */}
+          <header className="article-editorial-header">
+            <div className="article-tag-row">
+              <span className="article-cat-pill">{activeArticle.category}</span>
+              <span className="meta-dot">·</span>
+              <time dateTime={activeArticle.date}>{activeArticle.date}</time>
+              <span className="meta-dot">·</span>
+              <span>THE AVYR JOURNAL</span>
+            </div>
+
+            <h1 className="article-editorial-title">{activeArticle.title}</h1>
+            <p className="article-editorial-subtitle">{activeArticle.subtitle}</p>
+
+            {/* Author Profile Card */}
+            <div className="article-author-card">
+              <span className="author-avatar-large">
+                {activeArticle.author.avatar}
+              </span>
+              <div className="author-info">
+                <strong>{activeArticle.author.name}</strong>
+                <p>{activeArticle.author.role}</p>
+              </div>
+            </div>
+          </header>
+
+          {/* Full Width Hero Image */}
+          <div className="article-hero-cover-wrap">
+            <img
+              src={activeArticle.coverImage}
+              alt={activeArticle.title}
+              className="article-hero-cover-img"
+            />
+            <span className="article-cover-caption">
+              Field Study · Master Craftsmanship & Natural Linen Cultivation at the AVYR Atelier
+            </span>
+          </div>
+
+          {/* Atelier Key Takeaways Box */}
+          <div className="article-takeaways-card">
+            <div className="takeaways-header">
+              <Icon name="sparkles" size={16} />
+              <span>ATELIER KEY TAKEAWAYS</span>
+            </div>
+            <ul>
+              {activeArticle.keyTakeaways.map((point, idx) => (
+                <li key={idx}>
+                  <Icon name="check" size={14} />
+                  <span>{point}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Editorial Paragraphs */}
+          <div className="article-body-typography">
+            {activeArticle.content.map((paragraph, idx) => (
+              <p
+                key={idx}
+                className={idx === 0 ? "editorial-dropcap-paragraph" : ""}
+              >
+                {paragraph}
+              </p>
+            ))}
+          </div>
+
+          {/* Tags Strip */}
+          <div className="article-tags-wrap">
+            <span className="tags-label">TOPICS:</span>
+            {activeArticle.tags.map((tag) => (
+              <span key={tag} className="article-tag-chip">
+                #{tag}
+              </span>
+            ))}
+          </div>
+
+          {/* Featured Shirts from this Essay */}
+          {activeArticle.relatedProductIds.length > 0 && (
+            <section className="article-featured-shirts-section">
+              <div className="featured-shirts-head">
+                <span className="eyebrow">From This Story</span>
+                <h3>Artisanal Shirts Featured in This Essay</h3>
+                <p>Designed with the exact embroidery techniques and linen weights explored above.</p>
+              </div>
+
+              <div className="featured-shirts-grid">
+                {activeArticle.relatedProductIds.map((pId) => {
+                  const product = products.find((p) => p.id === pId)
+                  if (!product) return null
+                  return (
+                    <div key={product.id} className="featured-shirt-card">
+                      <div
+                        className="shirt-card-media"
+                        onClick={() => openProduct(product)}
+                      >
+                        <img src={product.images[0]} alt={product.name} />
+                        <span className="shirt-badge">{product.badge || "Handcrafted"}</span>
+                      </div>
+                      <div className="shirt-card-body">
+                        <small className="shirt-category">{product.category}</small>
+                        <strong
+                          className="shirt-title"
+                          onClick={() => openProduct(product)}
+                        >
+                          {product.name}
+                        </strong>
+                        <div className="shirt-price-row">
+                          <span className="shirt-price">{money(product.price)}</span>
+                          {product.compareAtPrice && (
+                            <s className="shirt-old-price">{money(product.compareAtPrice)}</s>
+                          )}
+                        </div>
+                        <div className="shirt-actions-row">
+                          <Button
+                            variant="light"
+                            className="shirt-add-btn"
+                            onClick={() => addToCart(product)}
+                          >
+                            + Quick Bag
+                          </Button>
+                          <Button
+                            variant="dark"
+                            className="shirt-view-btn"
+                            onClick={() => openProduct(product)}
+                          >
+                            View
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+            </section>
+          )}
+
+          {/* Social Share Bar */}
+          <div className="article-bottom-share-strip">
+            <span className="share-prompt">Enjoyed this essay? Share it:</span>
+            <div className="share-buttons-row">
+              <a
+                href={`https://api.whatsapp.com/send?text=${encodeURIComponent(
+                  `Read this insightful menswear essay: "${activeArticle.title}" on AVYR Journal:\n${window.location.href}`
+                )}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="social-share-pill whatsapp"
+              >
+                WhatsApp
+              </a>
+              <a
+                href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
+                  `"${activeArticle.title}" - A thoughtful exploration from AVYR Atelier Journal.`
+                )}&url=${encodeURIComponent(window.location.href)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="social-share-pill twitter"
+              >
+                Twitter / X
+              </a>
+              <button
+                type="button"
+                className="social-share-pill copy"
+                onClick={handleCopyLink}
+              >
+                {copied ? "Link Copied! ✓" : "Copy Link"}
+              </button>
+            </div>
+          </div>
+
+          {/* Next / Previous Story Cards */}
+          <div className="article-nav-cards-strip">
+            {prevPost ? (
+              <div
+                className="nav-story-card prev"
+                onClick={() => {
+                  setActiveArticle(prevPost)
+                  window.scrollTo({ top: 0, behavior: "smooth" })
+                }}
+              >
+                <span className="nav-story-direction">← Previous Essay</span>
+                <h4>{prevPost.title}</h4>
+                <small>{prevPost.readTime} · {prevPost.category}</small>
+              </div>
+            ) : (
+              <div />
+            )}
+
+            {nextPost ? (
+              <div
+                className="nav-story-card next"
+                onClick={() => {
+                  setActiveArticle(nextPost)
+                  window.scrollTo({ top: 0, behavior: "smooth" })
+                }}
+              >
+                <span className="nav-story-direction">Next Essay →</span>
+                <h4>{nextPost.title}</h4>
+                <small>{nextPost.readTime} · {nextPost.category}</small>
+              </div>
+            ) : (
+              <div />
+            )}
+          </div>
+
+          {/* Bottom Back Button */}
+          <div className="article-bottom-actions">
+            <Button
+              variant="outline"
+              className="bottom-back-all-btn"
+              onClick={handleCloseArticle}
+            >
+              ← Back to All Essays
+            </Button>
+            <Button
+              variant="dark"
+              className="bottom-shop-btn"
+              onClick={() => go("shop")}
+            >
+              Explore Shirt Collection →
+            </Button>
+          </div>
+        </article>
+      </div>
+    )
+  }
+
+  // =========================================================================
+  // 2. FULL PAGE JOURNAL CATALOG VIEW
+  // =========================================================================
   return (
     <div className="blog-page-container">
-      {/* Blog Hero Header (SEO optimized) */}
+      {/* Blog Hero Header */}
       <header className="blog-hero-section">
         <div className="blog-hero-badge">
           <Icon name="sparkles" size={13} />
@@ -70,9 +387,16 @@ export function BlogView({ go, openProduct, addToCart }: BlogViewProps) {
 
       {/* Featured Headline Story (shown when All Essays selected) */}
       {selectedCategory === "All Essays" && featuredPost && (
-        <section className="featured-blog-card" onClick={() => setActiveArticle(featuredPost)}>
+        <section
+          className="featured-blog-card"
+          onClick={() => setActiveArticle(featuredPost)}
+        >
           <div className="featured-blog-img-wrap">
-            <img src={featuredPost.coverImage} alt={featuredPost.title} loading="eager" />
+            <img
+              src={featuredPost.coverImage}
+              alt={featuredPost.title}
+              loading="eager"
+            />
             <span className="featured-badge">FEATURED ESSAY</span>
           </div>
           <div className="featured-blog-copy">
@@ -108,9 +432,14 @@ export function BlogView({ go, openProduct, addToCart }: BlogViewProps) {
       <section className="blog-articles-section">
         <div className="blog-grid-header">
           <h3>
-            {selectedCategory === "All Essays" ? "Latest Dispatches" : selectedCategory}
+            {selectedCategory === "All Essays"
+              ? "Latest Dispatches"
+              : selectedCategory}
           </h3>
-          <span>{filteredPosts.length} {filteredPosts.length === 1 ? "article" : "articles"}</span>
+          <span>
+            {filteredPosts.length}{" "}
+            {filteredPosts.length === 1 ? "article" : "articles"}
+          </span>
         </div>
 
         <div className="blog-articles-grid">
@@ -139,7 +468,7 @@ export function BlogView({ go, openProduct, addToCart }: BlogViewProps) {
                     <small>{post.author.name}</small>
                   </div>
                   <span className="read-more-link">
-                    Read <Icon name="arrow" size={13} />
+                    Read Essay <Icon name="arrow" size={13} />
                   </span>
                 </div>
               </div>
@@ -148,169 +477,21 @@ export function BlogView({ go, openProduct, addToCart }: BlogViewProps) {
         </div>
       </section>
 
-      {/* Full Article Reader Modal */}
-      {activeArticle && (
-        <Modal onClose={() => setActiveArticle(null)}>
-          <div className="article-reader-container">
-            {/* Article Top Header */}
-            <div className="reader-header">
-              <div className="reader-badge-row">
-                <span className="blog-cat-tag">{activeArticle.category}</span>
-                <span>·</span>
-                <span><Icon name="clock" size={12} /> {activeArticle.readTime}</span>
-                <span>·</span>
-                <span>{activeArticle.date}</span>
-              </div>
-              <h1>{activeArticle.title}</h1>
-              <p className="reader-subtitle">{activeArticle.subtitle}</p>
-
-              {/* Author Banner */}
-              <div className="reader-author-banner">
-                <span className="author-avatar large">{activeArticle.author.avatar}</span>
-                <div>
-                  <strong>{activeArticle.author.name}</strong>
-                  <p>{activeArticle.author.role}</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Main Cover Banner */}
-            <div className="reader-cover-wrap">
-              <img src={activeArticle.coverImage} alt={activeArticle.title} />
-            </div>
-
-            {/* Key Takeaways Box */}
-            <div className="reader-takeaways-card">
-              <div className="takeaways-head">
-                <Icon name="sparkles" size={16} />
-                <strong>Atelier Key Takeaways</strong>
-              </div>
-              <ul>
-                {activeArticle.keyTakeaways.map((point, idx) => (
-                  <li key={idx}>
-                    <Icon name="check" size={14} />
-                    <span>{point}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Article Paragraphs */}
-            <div className="reader-body-copy">
-              {activeArticle.content.map((p, idx) => (
-                <p key={idx} className={idx === 0 ? "first-paragraph-dropcap" : ""}>
-                  {p}
-                </p>
-              ))}
-            </div>
-
-            {/* Tags Strip */}
-            <div className="reader-tags-strip">
-              <span>Tags:</span>
-              {activeArticle.tags.map((tag) => (
-                <span key={tag} className="article-tag-chip">
-                  #{tag}
-                </span>
-              ))}
-            </div>
-
-            {/* Related Shirts to Shop Section */}
-            {activeArticle.relatedProductIds.length > 0 && (
-              <div className="reader-related-products">
-                <div className="related-products-head">
-                  <span className="eyebrow">From This Story</span>
-                  <h3>Artisanal Shirts Featured in this Essay</h3>
-                </div>
-                <div className="reader-products-grid">
-                  {activeArticle.relatedProductIds.map((pId) => {
-                    const product = products.find((p) => p.id === pId)
-                    if (!product) return null
-                    return (
-                      <div key={product.id} className="reader-product-card">
-                        <img
-                          src={product.images[0]}
-                          alt={product.name}
-                          onClick={() => {
-                            openProduct(product)
-                            setActiveArticle(null)
-                          }}
-                        />
-                        <div className="reader-product-info">
-                          <small>{product.category}</small>
-                          <strong
-                            onClick={() => {
-                              openProduct(product)
-                              setActiveArticle(null)
-                            }}
-                          >
-                            {product.name}
-                          </strong>
-                          <span className="reader-price">{money(product.price)}</span>
-                        </div>
-                        <div className="reader-product-btns">
-                          <Button
-                            variant="light"
-                            onClick={() => {
-                              addToCart(product)
-                            }}
-                          >
-                            + Quick Bag
-                          </Button>
-                          <Button
-                            variant="dark"
-                            onClick={() => {
-                              openProduct(product)
-                              setActiveArticle(null)
-                            }}
-                          >
-                            View
-                          </Button>
-                        </div>
-                      </div>
-                    )
-                  })}
-                </div>
-              </div>
-            )}
-
-            {/* Share Article Bar */}
-            <div className="reader-share-bar">
-              <span>Share this essay:</span>
-              <div className="share-buttons-group">
-                <a
-                  href={`https://api.whatsapp.com/send?text=${encodeURIComponent(
-                    `Read this insightful menswear essay: "${activeArticle.title}" on AVYR Journal:\n${window.location.href}`
-                  )}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="social-btn whatsapp"
-                >
-                  WhatsApp
-                </a>
-                <a
-                  href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
-                    `"${activeArticle.title}" - A thoughtful exploration from AVYR Atelier Journal.`
-                  )}&url=${encodeURIComponent(window.location.href)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="social-btn twitter"
-                >
-                  Twitter / X
-                </a>
-                <button type="button" className="social-btn copy" onClick={handleCopyLink}>
-                  {copied ? "Copied! ✓" : "Copy Link"}
-                </button>
-              </div>
-            </div>
-
-            <div className="reader-close-action">
-              <Button onClick={() => setActiveArticle(null)}>
-                ← Back to All Journal Essays
-              </Button>
-            </div>
-          </div>
-        </Modal>
-      )}
+      {/* Atelier Journal Mission Note */}
+      <section className="blog-mission-note">
+        <div className="mission-content">
+          <Icon name="sparkles" size={20} />
+          <h4>Craftsmanship as a Living Philosophy</h4>
+          <p>
+            Every piece at AVYR begins with patient conversations between our textile designers
+            and artisan communities. We document our journey not merely to celebrate menswear,
+            but to preserve slow, mindful tailoring for modern generations.
+          </p>
+          <Button variant="outline" onClick={() => go("shop")}>
+            Explore Our Handcrafted Collection →
+          </Button>
+        </div>
+      </section>
     </div>
   )
 }

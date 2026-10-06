@@ -289,7 +289,9 @@ export function Header({
                 className={`drawer-link ${view === item.target ? "active" : ""}`}
                 onClick={() => handleNavClick(item.target)}
               >
-                <span className="drawer-link-text">{item.label}</span>
+                <span className="drawer-link-text">
+                  {item.target === "blog" ? "Journal & Blog" : item.label}
+                </span>
                 {item.badge && <span className="drawer-sale-badge">{item.badge}</span>}
                 <Icon name="arrow" size={15} />
               </button>

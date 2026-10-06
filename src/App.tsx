@@ -22,6 +22,7 @@ export function App() {
   const [view, setView] = useState<View>("home")
   const [previousView, setPreviousView] = useState<View>("home")
   const [selected, setSelected] = useState<Product>(products[0])
+  const [selectedBlogId, setSelectedBlogId] = useState<string | null>(null)
 
   // User Authentication State
   const [user, setUser] = useState<User | null>(() => {
@@ -147,6 +148,9 @@ export function App() {
     if (view !== "product") {
       setPreviousView(view)
     }
+    if (next !== "blog") {
+      setSelectedBlogId(null)
+    }
     setView(next)
     setMenuOpen(false)
     setSearchOpen(false)
@@ -264,6 +268,10 @@ export function App() {
             wishlist={wishlist}
             toggleWish={toggleWish}
             addToCart={addToCart}
+            onOpenArticle={(post) => {
+              setSelectedBlogId(post.id)
+              go("blog")
+            }}
           />
         )}
         {view === "shop" && (
@@ -336,6 +344,8 @@ export function App() {
             go={go}
             openProduct={openProduct}
             addToCart={(p) => addToCart(p)}
+            selectedBlogId={selectedBlogId}
+            setSelectedBlogId={setSelectedBlogId}
           />
         )}
         {view === "admin" && <AdminView />}
