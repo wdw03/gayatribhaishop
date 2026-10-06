@@ -5,7 +5,6 @@ import Button from "../common/Button"
 import Empty from "../common/Empty"
 import Icon from "../common/Icon"
 import ProductCard from "../product/ProductCard"
-import FilterGroup from "./FilterGroup"
 import ShopFilterSidebar from "./ShopFilterSidebar"
 
 export interface ShopViewProps {
@@ -14,23 +13,6 @@ export interface ShopViewProps {
   toggleWish: (id: string) => void
   addToCart: (p: Product) => void
 }
-
-interface ColorOption {
-  name: string
-  label: string
-  hex: string
-}
-
-const COLOR_OPTIONS: ColorOption[] = [
-  { name: "White", label: "White & Ivory", hex: "#fcfbf7" },
-  { name: "Blue", label: "Sky & Sea Blue", hex: "#7eb8da" },
-  { name: "Green", label: "Mint & Sea Green", hex: "#7fb79e" },
-  { name: "Rust", label: "Rust & Terracotta", hex: "#b85d34" },
-  { name: "Pink", label: "Salmon & Rose", hex: "#e8a598" },
-  { name: "Red", label: "True Red", hex: "#b33939" },
-  { name: "Maroon", label: "Maroon & Berry", hex: "#7b1126" },
-  { name: "Brown", label: "Earth Brown", hex: "#8a5c38" },
-]
 
 export function ShopView({
   openProduct,
@@ -341,42 +323,6 @@ export function ShopView({
             </button>
           ))}
         </div>
-
-        {/* Sticky Filters Sidebar on the Right (PC Desktop) / Drawer on Mobile */}
-        <ShopFilterSidebar
-          filtersOpen={filtersOpen}
-          setFiltersOpen={setFiltersOpen}
-          activeFilterCount={activeFilterCount}
-          hasActiveFilters={hasActiveFilters}
-          clearAllFilters={clearAllFilters}
-          category={category}
-          setCategory={setCategory}
-          size={size}
-          setSize={setSize}
-          priceRange={priceRange}
-          setPriceRange={setPriceRange}
-          selectedColors={selectedColors}
-          toggleColor={toggleColor}
-          selectedFit={selectedFit}
-          setSelectedFit={setSelectedFit}
-          selectedSleeve={selectedSleeve}
-          setSelectedSleeve={setSelectedSleeve}
-          selectedCollar={selectedCollar}
-          setSelectedCollar={setSelectedCollar}
-          selectedPattern={selectedPattern}
-          setSelectedPattern={setSelectedPattern}
-          selectedFabric={selectedFabric}
-          setSelectedFabric={setSelectedFabric}
-          selectedOccasion={selectedOccasion}
-          setSelectedOccasion={setSelectedOccasion}
-          minDiscount={minDiscount}
-          setMinDiscount={setMinDiscount}
-          minRating={minRating}
-          setMinRating={setMinRating}
-          availability={availability}
-          setAvailability={setAvailability}
-          totalCount={list.length}
-        />
       </div>
 
       {/* Catalog Bar with count and sorting */}

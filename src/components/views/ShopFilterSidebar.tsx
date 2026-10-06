@@ -160,7 +160,9 @@ export default function ShopFilterSidebar({
                   checked={isSelected}
                   onChange={() => setCategory(x)}
                 />
-                <span className="filter-item-name">{x} Shirts</span>
+                <span className="filter-item-name">
+                  {x === "All Shirts" ? "All Shirts" : `${x} Shirts`}
+                </span>
                 <span className="filter-item-count">{count}</span>
               </label>
             )
