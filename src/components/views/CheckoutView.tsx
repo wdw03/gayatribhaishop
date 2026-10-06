@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import { products } from "../../products"
-import type { CartItem, View } from "../../types"
+import type { Address, CartItem, User, View } from "../../types"
 import { money } from "../../utils/format"
 import Button from "../common/Button"
 import Icon from "../common/Icon"
@@ -9,32 +9,87 @@ export interface CheckoutViewProps {
   cart: CartItem[]
   setCart: React.Dispatch<React.SetStateAction<CartItem[]>>
   go: (v: View) => void
+  addresses?: Address[]
+  user?: User | null
 }
 
-export function AddressStep({ onNext }: { onNext: () => void }) {
+export function AddressStep({
+  onNext,
+  addresses = [],
+  go,
+}: {
+  onNext: () => void
+  addresses?: Address[]
+  go: (v: View) => void
+}) {
+  const [selectedId, setSelectedId] = useState<string>(() => {
+    const defaultAddr = addresses.find((a) => a.isDefault)
+    return defaultAddr ? defaultAddr.id : addresses[0]?.id || ""
+  })
+
   return (
     <>
       <span className="eyebrow">Step 1 of 3</span>
       <h1>Where should we deliver?</h1>
-      <div className="address-card selected">
-        <span className="radio" />
-        <div>
-          <strong>
-            Arjun Mehta <small>HOME</small>
-          </strong>
-          <p>
-            14, Sea View Apartments, Bandra West
-            <br />
-            Mumbai, Maharashtra 400050
-          </p>
-          <p>+91 98765 43210</p>
-          <button type="button">Edit address</button>
+
+      {addresses.length === 0 ? (
+        <div className="checkout-no-addr">
+          <p>No saved delivery address found in your account.</p>
+          <Button onClick={() => go("account")}>
+            <Icon name="plus" size={15} /> Add Delivery Address in Profile
+          </Button>
         </div>
-      </div>
-      <button className="add-address" type="button">
-        <Icon name="plus" /> Add a new address
+      ) : (
+        <div className="checkout-addresses-list">
+          {addresses.map((addr) => {
+            const isSelected = selectedId === addr.id
+            return (
+              <div
+                key={addr.id}
+                className={`address-card ${isSelected ? "selected" : ""}`}
+                onClick={() => setSelectedId(addr.id)}
+              >
+                <span className="radio" />
+                <div>
+                  <strong>
+                    {addr.name} <small>{addr.type}</small>
+                    {addr.isDefault && <b className="addr-default-tag">DEFAULT</b>}
+                  </strong>
+                  <p>
+                    {addr.street}
+                    {addr.area ? `, ${addr.area}` : ""}
+                    <br />
+                    {addr.city}, {addr.state} {addr.pincode}
+                  </p>
+                  <p>{addr.phone}</p>
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      go("account")
+                    }}
+                  >
+                    Edit in Profile
+                  </button>
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      )}
+
+      <button
+        className="add-address"
+        type="button"
+        onClick={() => go("account")}
+      >
+        <Icon name="plus" /> Manage or Add New Address in Profile
       </button>
-      <Button className="continue" onClick={onNext}>
+      <Button
+        className="continue"
+        onClick={onNext}
+        disabled={addresses.length === 0 || !selectedId}
+      >
         Deliver to this address <Icon name="arrow" />
       </Button>
     </>
@@ -158,10 +213,15 @@ export function PaymentStep({
   )
 }
 
-export function CheckoutView({ cart, setCart, go }: CheckoutViewProps) {
+export function CheckoutView({
+  cart,
+  setCart,
+  go,
+  addresses = [],
+  user,
+}: CheckoutViewProps) {
   const [step, setStep] = useState(1)
   const [complete, setComplete] = useState(false)
-
   const total = cart.reduce(
     (sum, x) =>
       sum + (products.find((p) => p.id === x.id)?.price || 0) * x.quantity,
@@ -233,7 +293,13 @@ export function CheckoutView({ cart, setCart, go }: CheckoutViewProps) {
       </div>
       <div className="checkout-layout">
         <section className="checkout-main">
-          {step === 1 && <AddressStep onNext={() => setStep(2)} />}
+          {step === 1 && (
+            <AddressStep
+              onNext={() => setStep(2)}
+              addresses={addresses}
+              go={go}
+            />
+          )}
           {step === 2 && (
             <DeliveryStep onNext={() => setStep(3)} onBack={() => setStep(1)} />
           )}

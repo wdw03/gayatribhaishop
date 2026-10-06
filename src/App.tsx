@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { products } from "./products"
-import type { CartItem, Product, View } from "./types"
+import type { Address, CartItem, Product, User, View } from "./types"
 import Icon from "./components/common/Icon"
 import Announcement from "./components/layout/Announcement"
 import Footer from "./components/layout/Footer"
@@ -12,6 +12,7 @@ import AdminView from "./components/views/AdminView"
 import BagView from "./components/views/BagView"
 import CheckoutView from "./components/views/CheckoutView"
 import HomeView from "./components/views/HomeView"
+import LoginView from "./components/views/LoginView"
 import ProductDetailView from "./components/views/ProductDetailView"
 import ShopView from "./components/views/ShopView"
 import WishlistView from "./components/views/WishlistView"
@@ -20,6 +21,60 @@ export function App() {
   const [view, setView] = useState<View>("home")
   const [previousView, setPreviousView] = useState<View>("home")
   const [selected, setSelected] = useState<Product>(products[0])
+
+  // User Authentication State
+  const [user, setUser] = useState<User | null>(() => {
+    try {
+      const saved = localStorage.getItem("avyr-user")
+      if (saved) return JSON.parse(saved)
+      return {
+        id: "usr_1",
+        name: "Arjun Mehta",
+        email: "arjun@example.com",
+        phone: "+91 98765 43210",
+        joinedDate: "April 2026",
+      }
+    } catch {
+      return null
+    }
+  })
+
+  // User Saved Addresses State
+  const [addresses, setAddresses] = useState<Address[]>(() => {
+    try {
+      const saved = localStorage.getItem("avyr-addresses")
+      if (saved) return JSON.parse(saved)
+      return [
+        {
+          id: "addr_1",
+          name: "Arjun Mehta",
+          phone: "+91 98765 43210",
+          street: "14, Sea View Apartments, Bandra West",
+          area: "Near Pali Hill",
+          city: "Mumbai",
+          state: "Maharashtra",
+          pincode: "400050",
+          type: "HOME",
+          isDefault: true,
+        },
+        {
+          id: "addr_2",
+          name: "Arjun Mehta",
+          phone: "+91 98765 43210",
+          street: "Floor 4, Peninsula Business Park, Tower B",
+          area: "Lower Parel",
+          city: "Mumbai",
+          state: "Maharashtra",
+          pincode: "400013",
+          type: "WORK",
+          isDefault: false,
+        },
+      ]
+    } catch {
+      return []
+    }
+  })
+
   const [wishlist, setWishlist] = useState<string[]>(() => {
     try {
       return JSON.parse(localStorage.getItem("avyr-wishlist") || "[]")
@@ -27,6 +82,7 @@ export function App() {
       return []
     }
   })
+
   const [cart, setCart] = useState<CartItem[]>(() => {
     try {
       return JSON.parse(localStorage.getItem("avyr-cart") || "[]")
@@ -34,10 +90,31 @@ export function App() {
       return []
     }
   })
+
   const [menuOpen, setMenuOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
   const [query, setQuery] = useState("")
   const [toast, setToast] = useState("")
+
+  useEffect(() => {
+    try {
+      if (user) {
+        localStorage.setItem("avyr-user", JSON.stringify(user))
+      } else {
+        localStorage.removeItem("avyr-user")
+      }
+    } catch {
+      // storage unavailable
+    }
+  }, [user])
+
+  useEffect(() => {
+    try {
+      localStorage.setItem("avyr-addresses", JSON.stringify(addresses))
+    } catch {
+      // storage unavailable
+    }
+  }, [addresses])
 
   useEffect(() => {
     try {
@@ -88,6 +165,53 @@ export function App() {
     setSearchOpen(false)
   }
 
+  const handleLogin = (loggedUser: User) => {
+    setUser(loggedUser)
+  }
+
+  const handleLogout = () => {
+    setUser(null)
+  }
+
+  const handleUpdateUser = (updated: User) => {
+    setUser(updated)
+  }
+
+  const handleSaveAddress = (addr: Address) => {
+    setAddresses((prev) => {
+      let next = [...prev]
+      if (addr.isDefault) {
+        next = next.map((a) => ({ ...a, isDefault: false }))
+      }
+      const existingIdx = next.findIndex((a) => a.id === addr.id)
+      if (existingIdx >= 0) {
+        next[existingIdx] = addr
+      } else {
+        next.push(addr)
+      }
+      return next
+    })
+  }
+
+  const handleDeleteAddress = (id: string) => {
+    setAddresses((prev) => {
+      const remaining = prev.filter((a) => a.id !== id)
+      if (remaining.length > 0 && !remaining.some((a) => a.isDefault)) {
+        remaining[0].isDefault = true
+      }
+      return remaining
+    })
+  }
+
+  const handleSetDefaultAddress = (id: string) => {
+    setAddresses((prev) =>
+      prev.map((a) => ({
+        ...a,
+        isDefault: a.id === id,
+      }))
+    )
+  }
+
   const toggleWish = (id: string) => {
     setWishlist((prev) =>
       prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id],
@@ -129,6 +253,7 @@ export function App() {
         setSearchOpen={setSearchOpen}
         wishlistCount={wishlist.length}
         cartCount={cart.reduce((sum, item) => sum + item.quantity, 0)}
+        user={user}
       />
       <main>
         {view === "home" && (
@@ -177,13 +302,38 @@ export function App() {
           />
         )}
         {view === "checkout" && (
-          <CheckoutView cart={cart} setCart={setCart} go={go} />
+          <CheckoutView
+            cart={cart}
+            setCart={setCart}
+            go={go}
+            addresses={addresses}
+            user={user}
+          />
         )}
-        {view === "account" && <AccountView go={go} />}
+        {view === "login" && (
+          <LoginView
+            onLogin={handleLogin}
+            go={go}
+            showToast={(msg) => setToast(msg)}
+          />
+        )}
+        {view === "account" && (
+          <AccountView
+            user={user}
+            onUpdateUser={handleUpdateUser}
+            onLogout={handleLogout}
+            addresses={addresses}
+            onSaveAddress={handleSaveAddress}
+            onDeleteAddress={handleDeleteAddress}
+            onSetDefaultAddress={handleSetDefaultAddress}
+            go={go}
+            showToast={(msg) => setToast(msg)}
+          />
+        )}
         {view === "admin" && <AdminView />}
       </main>
-      {!["checkout", "admin"].includes(view) && <Footer go={go} />}
-      {view !== "product" && (
+      {!["checkout", "admin", "login"].includes(view) && <Footer go={go} />}
+      {!["product", "checkout", "login"].includes(view) && (
         <MobileNav
           view={view}
           go={go}

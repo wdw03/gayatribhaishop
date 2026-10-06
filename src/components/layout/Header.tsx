@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import type { View } from "../../types"
+import type { User, View } from "../../types"
 import Icon from "../common/Icon"
 
 export interface HeaderProps {
@@ -10,6 +10,7 @@ export interface HeaderProps {
   setSearchOpen: (v: boolean) => void
   wishlistCount: number
   cartCount: number
+  user?: User | null
 }
 
 interface NavItem {
@@ -27,6 +28,7 @@ export function Header({
   setSearchOpen,
   wishlistCount,
   cartCount,
+  user,
 }: HeaderProps) {
   const [isScrolled, setIsScrolled] = useState(false)
 
@@ -167,14 +169,20 @@ export function Header({
               <Icon name="search" size={20} />
             </button>
 
-            {/* Desktop Account Button */}
+            {/* Account / Profile Button (Desktop & Mobile) */}
             <button
-              className="icon-btn action-icon-btn desktop-only"
-              onClick={() => handleNavClick("account")}
-              aria-label="Account"
-              title="My Account"
+              className="icon-btn action-icon-btn account-icon-btn"
+              onClick={() => handleNavClick(user ? "account" : "login")}
+              aria-label={user ? `Account: ${user.name}` : "Sign In"}
+              title={user ? `Account (${user.name})` : "Sign In / Register"}
             >
-              <Icon name="user" size={19} />
+              {user ? (
+                <span className="header-user-avatar">
+                  {user.name.slice(0, 1).toUpperCase()}
+                </span>
+              ) : (
+                <Icon name="user" size={19} />
+              )}
             </button>
 
             {/* Wishlist Button with Live Count */}
@@ -238,6 +246,41 @@ export function Header({
         </div>
 
         <div className="mobile-drawer-body">
+          {/* User Account / Sign In Drawer Card */}
+          <div className="drawer-user-card">
+            {user ? (
+              <div
+                className="drawer-user-logged"
+                onClick={() => handleNavClick("account")}
+              >
+                <div className="drawer-user-avatar">
+                  {user.name.slice(0, 2).toUpperCase()}
+                </div>
+                <div className="drawer-user-meta">
+                  <strong>{user.name}</strong>
+                  <small>{user.email}</small>
+                  <span className="drawer-account-link">
+                    Profile & Saved Addresses →
+                  </span>
+                </div>
+              </div>
+            ) : (
+              <div
+                className="drawer-guest-box"
+                onClick={() => handleNavClick("login")}
+              >
+                <div className="drawer-guest-icon">
+                  <Icon name="user" size={18} />
+                </div>
+                <div className="drawer-guest-meta">
+                  <strong>Sign In / Register</strong>
+                  <small>Manage addresses & track orders</small>
+                </div>
+                <Icon name="arrow" size={14} />
+              </div>
+            )}
+          </div>
+
           {/* Main Navigation List */}
           <nav className="mobile-drawer-nav">
             {navItems.map((item) => (
