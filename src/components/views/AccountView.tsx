@@ -280,9 +280,51 @@ export function AccountView({
         <div className="account-person">
           <div className="user-avatar-monogram">{initials}</div>
           <div className="user-info-text">
-            <strong>{user.name}</strong>
+            <div className="user-name-title-row">
+              <strong>{user.name}</strong>
+              <span className="user-verified-badge">
+                <Icon name="check" size={10} /> Verified
+              </span>
+            </div>
             <small>{user.email}</small>
+            {user.phone && <small className="user-phone-line">{user.phone}</small>}
             <span className="member-tier">Patron Member</span>
+          </div>
+          <button
+            type="button"
+            className="account-edit-profile-pill"
+            onClick={handleOpenEditProfile}
+            aria-label="Edit Profile"
+          >
+            <Icon name="edit" size={13} />
+            <span>Edit</span>
+          </button>
+        </div>
+
+        {/* Quick Shortcut Stats Strip (Immediate clarity on mobile & desktop) */}
+        <div className="account-mobile-stats-row">
+          <button
+            type="button"
+            className="mobile-stat-box"
+            onClick={() => setTab("Orders")}
+          >
+            <span className="stat-box-val">1</span>
+            <span className="stat-box-name">Active Order</span>
+            <small className="stat-box-sub">In transit →</small>
+          </button>
+          <button
+            type="button"
+            className="mobile-stat-box"
+            onClick={() => setTab("Addresses")}
+          >
+            <span className="stat-box-val">{addresses.length}</span>
+            <span className="stat-box-name">Addresses</span>
+            <small className="stat-box-sub">Manage →</small>
+          </button>
+          <div className="mobile-stat-box">
+            <span className="stat-box-val gold-val">1,450</span>
+            <span className="stat-box-name">Craft Points</span>
+            <small className="stat-box-sub">Worth ₹1,450</small>
           </div>
         </div>
 
