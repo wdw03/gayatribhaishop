@@ -1,0 +1,10 @@
+{
+  "description": "Discover a premium e-commerce platform dedicated exclusively to men's shirts, offering a seamless shopping experience with extensive product categories, personalized recommendations, and efficient order management.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
