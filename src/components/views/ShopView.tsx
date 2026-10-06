@@ -23,6 +23,24 @@ export function ShopView({
   // Filter states
   const [sort, setSort] = useState("Recommended")
   const [filtersOpen, setFiltersOpen] = useState(false)
+  // Desktop filter sidebar position: "left" (default) or "right"
+  const [filterPosition, setFilterPosition] = useState<"left" | "right">(() => {
+    try {
+      const saved = localStorage.getItem("avyr-filter-pos")
+      return saved === "right" ? "right" : "left"
+    } catch {
+      return "left"
+    }
+  })
+
+  const handlePositionChange = (pos: "left" | "right") => {
+    setFilterPosition(pos)
+    try {
+      localStorage.setItem("avyr-filter-pos", pos)
+    } catch {
+      // ignore
+    }
+  }
   const [category, setCategory] = useState("All Shirts")
   const [size, setSize] = useState("")
   const [priceRange, setPriceRange] = useState("")
@@ -124,7 +142,7 @@ export function ShopView({
         category === "Linen"
           ? p.fabric.toLowerCase().includes("linen")
           : p.category.toLowerCase().includes(category.toLowerCase()) ||
-            p.name.toLowerCase().includes(category.toLowerCase()),
+          p.name.toLowerCase().includes(category.toLowerCase()),
       )
     }
 
@@ -339,6 +357,35 @@ export function ShopView({
         </div>
 
         <div className="catalog-actions-wrap">
+          {/* Desktop Left/Right Sidebar Position Switcher */}
+          <div
+            className="filter-position-switcher desktop-only"
+            role="group"
+            aria-label="Filter sidebar position"
+          >
+            <span className="switcher-caption">Sidebar:</span>
+            <div className="switcher-pills">
+              <button
+                type="button"
+                className={`switcher-pill ${filterPosition === "left" ? "active" : ""}`}
+                onClick={() => handlePositionChange("left")}
+                title="Keep filter sidebar on Left (Sticky)"
+              >
+                <Icon name="sliders" size={11} />
+                <span>Left</span>
+              </button>
+              <button
+                type="button"
+                className={`switcher-pill ${filterPosition === "right" ? "active" : ""}`}
+                onClick={() => handlePositionChange("right")}
+                title="Move filter sidebar to Right (Sticky)"
+              >
+                <span>Right</span>
+                <Icon name="sliders" size={11} />
+              </button>
+            </div>
+          </div>
+
           <Button
             variant="outline"
             className="filter-toggle"
@@ -375,8 +422,8 @@ export function ShopView({
         aria-hidden="true"
       />
 
-      {/* Main Catalog Layout with Sticky Filters Sidebar */}
-      <div className="catalog-layout">
+      {/* Main Catalog Layout with Sticky Filters Sidebar (Supports Left or Right position) */}
+      <div className={`catalog-layout layout-${filterPosition}`}>
         {/* Product Catalog Display (Independent Scroll) */}
         <div className="catalog-products">
           {/* Active Filter Chips Bar */}

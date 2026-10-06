@@ -18,7 +18,7 @@
 
 * { box-sizing: border-box; }
 html {
-  overflow-x: hidden;
+  overflow-x: clip;
   max-width: 100%;
   width: 100%;
 }
@@ -26,7 +26,7 @@ body {
   margin: 0;
   min-width: 320px;
   max-width: 100%;
-  overflow-x: hidden;
+  overflow-x: clip;
   width: 100%;
   background: var(--paper);
   -webkit-tap-highlight-color: transparent;
@@ -834,37 +834,117 @@ h1, h2 { font-family: "Italiana", Georgia, serif; font-weight: 400; }
   font-size: 9px;
 }
 
+/* Sidebar Position Switcher (Left / Right) */
+.filter-position-switcher {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 3px 5px 3px 10px;
+  background: #f7f4ee;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+}
+
+.switcher-caption {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.switcher-pills {
+  display: inline-flex;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 14px;
+  padding: 2px;
+  gap: 2px;
+}
+
+.switcher-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 11px;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 10.5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  line-height: 1;
+}
+
+.switcher-pill:hover {
+  color: var(--ink);
+}
+
+.switcher-pill.active {
+  background: var(--ink);
+  color: #ffffff;
+  font-weight: 600;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
+}
+
+/* Catalog Grid Layout (Supports Left or Right sticky sidebar) */
 .catalog-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 290px;
-  grid-template-areas: "products filters";
-  padding: 30px 4vw 80px;
+  padding: 24px 4vw 80px;
   gap: 36px;
   align-items: start;
   width: 100%;
   box-sizing: border-box;
 }
 
-.catalog-products {
+/* Left Sidebar Layout (Default eCommerce Standard) */
+.catalog-layout,
+.catalog-layout.layout-left {
+  grid-template-columns: 290px minmax(0, 1fr);
+  grid-template-areas: "filters products";
+}
+.catalog-layout.layout-left .filters {
+  grid-area: filters;
+}
+.catalog-layout.layout-left .catalog-products {
   grid-area: products;
-  grid-column: 1;
-  min-width: 0;
-  width: 100%;
 }
 
-/* Sticky Filters Sidebar on the Right (PC Desktop) */
+/* Right Sidebar Layout (When toggled to Right) */
+.catalog-layout.layout-right {
+  grid-template-columns: minmax(0, 1fr) 290px;
+  grid-template-areas: "products filters";
+}
+.catalog-layout.layout-right .catalog-products {
+  grid-area: products;
+}
+.catalog-layout.layout-right .filters {
+  grid-area: filters;
+}
+
+.catalog-products {
+  grid-area: products;
+  min-width: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Sticky Filters Sidebar (Always Stationary & Sticky on Desktop) */
 .filters {
   grid-area: filters;
-  grid-column: 2;
-  position: sticky;
-  top: 96px;
-  align-self: start;
-  width: 290px;
-  max-width: 290px;
-  height: calc(100vh - 120px);
-  max-height: calc(100vh - 120px);
-  overflow-y: auto;
-  overflow-x: hidden;
+  position: -webkit-sticky !important;
+  position: sticky !important;
+  top: 80px !important;
+  align-self: start !important;
+  width: 290px !important;
+  max-width: 290px !important;
+  height: calc(100vh - 100px) !important;
+  max-height: calc(100vh - 100px) !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
   background: #ffffff;
   border: 1px solid var(--line);
   border-radius: 8px;
@@ -873,7 +953,7 @@ h1, h2 { font-family: "Italiana", Georgia, serif; font-weight: 400; }
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-  z-index: 10;
+  z-index: 25;
 }
 
 /* Custom sleek scrollbar for sticky sidebar */
@@ -1642,71 +1722,27 @@ footer > div > button { border: 0; background: none; color: #9ba69e; padding: 0;
   footer { grid-template-columns: 1.5fr repeat(2, 1fr); }
   .footer-contact { display: none !important; }
 
-  /* Catalog on Tablet / Medium Screens (<= 1050px) */
-  .catalog-layout { display: block; padding: 22px 3vw 60px; }
-  .filter-toggle { min-height: 38px; padding: 0 14px; display: inline-flex; align-items: center; gap: 7px; }
-  .filter-backdrop {
-    display: block;
-    position: fixed;
-    inset: 0;
-    z-index: 85;
-    background: rgba(14, 25, 18, 0.45);
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
+  /* Catalog on Tablet / Medium Screens: Keep Desktop Sticky Layout with 2 Product Columns */
+  .catalog-layout {
+    gap: 24px;
+    padding: 20px 3vw 60px;
   }
-  .filter-backdrop.open {
-    opacity: 1;
-    pointer-events: auto;
+  .catalog-layout,
+  .catalog-layout.layout-left {
+    grid-template-columns: 260px minmax(0, 1fr);
+  }
+  .catalog-layout.layout-right {
+    grid-template-columns: minmax(0, 1fr) 260px;
   }
   .filters {
-    position: fixed;
-    z-index: 90;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    left: auto;
-    width: min(390px, 82vw);
-    max-width: 85vw;
-    height: 100vh;
-    height: 100dvh;
-    padding: 22px 18px 95px;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    background: #ffffff;
-    box-shadow: -8px 0 35px rgba(0, 0, 0, 0.22);
-    border-left: 1px solid var(--line);
-    transform: translateX(105%);
-    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-    border-radius: 0;
+    width: 260px !important;
+    max-width: 260px !important;
+    padding: 18px 16px;
   }
-  .filters.open {
-    transform: translateX(0);
+  .shop-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
   }
-  .filter-mobile-close {
-    border: 0;
-    background: #f4f2eb;
-    border-radius: 50%;
-    width: 32px;
-    height: 32px;
-    display: grid;
-    place-items: center;
-    cursor: pointer;
-    color: var(--ink);
-  }
-  .apply-filter {
-    position: fixed;
-    bottom: 12px;
-    right: 18px;
-    width: calc(min(390px, 82vw) - 36px);
-    z-index: 95;
-    display: flex;
-    min-height: 46px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
-  }
-  .shop-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
 }
 
 @media (max-width: 760px) {
