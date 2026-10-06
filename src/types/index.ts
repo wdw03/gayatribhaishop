@@ -8,7 +8,7 @@ export type CartItem = {
   quantity: number
 }
 
-export type IconName = "search" | "heart" | "bag" | "user" | "menu" | "close" | "arrow" | "star" | "filter" | "chevron" | "truck" | "shield" | "refresh" | "plus" | "minus" | "trash" | "check"
+export type IconName = "search" | "heart" | "bag" | "user" | "menu" | "close" | "arrow" | "star" | "filter" | "chevron" | "truck" | "shield" | "refresh" | "plus" | "minus" | "trash" | "check" | "share"
 
 export const categories = [
   "Contemporary",
