@@ -368,7 +368,14 @@ export function ShopView({
 
       {/* Main Catalog Layout with Sticky Filters Sidebar */}
       <div className="catalog-layout">
-        {/* Sticky Filters Sidebar */}
+        {/* Semi-transparent Half-Screen Backdrop for Side Drawer */}
+        <div
+          className={`filter-backdrop ${filtersOpen ? "open" : ""}`}
+          onClick={() => setFiltersOpen(false)}
+          aria-hidden="true"
+        />
+
+        {/* Half-Screen Side Filter Drawer */}
         <aside className={`filters ${filtersOpen ? "open" : ""}`}>
           {/* Sidebar Top Header with Reset All */}
           <div className="filters-sidebar-header">

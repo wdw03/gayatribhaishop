@@ -6,6 +6,8 @@ import SectionTitle from "../common/SectionTitle"
 import ProductCard from "../product/ProductCard"
 
 import HeroSlider from "../home/HeroSlider"
+import ReelsSection from "../home/ReelsSection"
+import BlogPreviewSection from "../home/BlogPreviewSection"
 
 export interface HomeViewProps {
   openProduct: (p: Product) => void
@@ -114,6 +116,13 @@ export function HomeView({
         </div>
       </section>
 
+      {/* Luxury Lookbook Reels in Motion */}
+      <ReelsSection
+        openProduct={openProduct}
+        addToCart={addToCart}
+        go={go}
+      />
+
       <section className="story">
         <div className="story-images">
           <img
@@ -169,6 +178,9 @@ export function HomeView({
           ))}
         </div>
       </section>
+
+      {/* SEO & Craft Storytelling: Journal Blog Preview */}
+      <BlogPreviewSection go={go} />
 
       <section className="reviews">
         <span className="eyebrow">Worn & Loved</span>

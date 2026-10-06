@@ -339,6 +339,55 @@ export function AccountView({
         {/* TAB 1: PROFILE MANAGEMENT */}
         {tab === "Profile" && (
           <div className="profile-section">
+            {/* Luxury Atelier Cover Banner */}
+            <div className="profile-cover-banner">
+              <div className="cover-badge-tag">
+                <Icon name="sparkles" size={13} />
+                <span>AVYR CLUB PRIVÉ · VIP ATELIER</span>
+              </div>
+              <div className="cover-title-group">
+                <h2>Welcome to your Private Atelier, {user.name.split(" ")[0]}</h2>
+                <p>
+                  Generational bespoke tailoring, priority order dispatch, and private drop access.
+                </p>
+              </div>
+              <div className="cover-perks-strip">
+                <span className="perk-pill">
+                  <Icon name="award" size={13} /> Gold Artisan Tier
+                </span>
+                <span className="perk-pill">
+                  <Icon name="truck" size={13} /> Complimentary 48h Express Shipping
+                </span>
+                <span className="perk-pill">
+                  <Icon name="shield" size={13} /> 100% Craft Guarantee
+                </span>
+              </div>
+            </div>
+
+            {/* Quick Stat Counter Cards */}
+            <div className="profile-stats-strip">
+              <div className="profile-stat-box" onClick={() => setTab("Orders")}>
+                <span className="stat-label">Active Orders</span>
+                <strong className="stat-value">1</strong>
+                <small className="stat-hint">Order #AVY260102 · In transit →</small>
+              </div>
+              <div className="profile-stat-box">
+                <span className="stat-label">Craft Points</span>
+                <strong className="stat-value gold-text">1,450</strong>
+                <small className="stat-hint">Worth ₹1,450 on next order</small>
+              </div>
+              <div className="profile-stat-box" onClick={() => setTab("Addresses")}>
+                <span className="stat-label">Saved Addresses</span>
+                <strong className="stat-value">{addresses.length}</strong>
+                <small className="stat-hint">Manage 1-click delivery →</small>
+              </div>
+              <div className="profile-stat-box" onClick={() => go("wishlist")}>
+                <span className="stat-label">Wishlist</span>
+                <strong className="stat-value">Saved</strong>
+                <small className="stat-hint">View saved shirts →</small>
+              </div>
+            </div>
+
             <div className="pane-header">
               <div>
                 <span className="eyebrow">Personal Information</span>

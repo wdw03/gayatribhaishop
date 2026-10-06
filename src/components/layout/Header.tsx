@@ -70,7 +70,7 @@ export function Header({
     { label: "All Shirts", target: "shop" },
     { label: "New Arrivals", target: "shop", dot: true },
     { label: "Resort Edit", target: "shop" },
-    { label: "Artisan Story", target: "home" },
+    { label: "Journal", target: "blog" },
     { label: "Sale", target: "shop", badge: "30% OFF" },
   ]
 

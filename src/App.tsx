@@ -12,6 +12,7 @@ import AdminView from "./components/views/AdminView"
 import BagView from "./components/views/BagView"
 import CheckoutView from "./components/views/CheckoutView"
 import HomeView from "./components/views/HomeView"
+import BlogView from "./components/views/BlogView"
 import LoginView from "./components/views/LoginView"
 import ProductDetailView from "./components/views/ProductDetailView"
 import ShopView from "./components/views/ShopView"
@@ -328,6 +329,13 @@ export function App() {
             onSetDefaultAddress={handleSetDefaultAddress}
             go={go}
             showToast={(msg) => setToast(msg)}
+          />
+        )}
+        {view === "blog" && (
+          <BlogView
+            go={go}
+            openProduct={openProduct}
+            addToCart={(p) => addToCart(p)}
           />
         )}
         {view === "admin" && <AdminView />}

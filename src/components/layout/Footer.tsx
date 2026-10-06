@@ -61,15 +61,15 @@ export function Footer({ go }: FooterProps) {
       <div>
         <strong>About AVYR</strong>
         {[
-          "Our story",
-          "The craft",
-          "Journal",
-          "Careers",
-          "Privacy policy",
-          "Terms",
-        ].map((x) => (
-          <button type="button" key={x}>
-            {x}
+          { label: "Our story", action: () => go("home") },
+          { label: "The craft", action: () => go("home") },
+          { label: "Journal & Essays", action: () => go("blog") },
+          { label: "Careers", action: () => {} },
+          { label: "Privacy policy", action: () => {} },
+          { label: "Terms", action: () => {} },
+        ].map((item) => (
+          <button type="button" key={item.label} onClick={item.action}>
+            {item.label}
           </button>
         ))}
       </div>

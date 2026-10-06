@@ -1,6 +1,16 @@
 import type { Product } from "../products"
 
-export type View = "home" | "shop" | "product" | "wishlist" | "bag" | "checkout" | "account" | "admin" | "login"
+export type View =
+  | "home"
+  | "shop"
+  | "product"
+  | "wishlist"
+  | "bag"
+  | "checkout"
+  | "account"
+  | "admin"
+  | "login"
+  | "blog"
 
 export interface User {
   id: string
@@ -9,6 +19,8 @@ export interface User {
   phone: string
   avatar?: string
   joinedDate?: string
+  membershipTier?: "Silver" | "Gold" | "Artisan VIP"
+  points?: number
 }
 
 export interface Address {
@@ -28,6 +40,42 @@ export type CartItem = {
   id: string
   size: string
   quantity: number
+}
+
+export interface BlogPost {
+  id: string
+  slug: string
+  title: string
+  subtitle: string
+  excerpt: string
+  content: string[]
+  keyTakeaways: string[]
+  author: {
+    name: string
+    role: string
+    avatar: string
+  }
+  category: "Craft & Atelier" | "Style Guides" | "Fabric Science" | "Resort Life"
+  coverImage: string
+  readTime: string
+  date: string
+  tags: string[]
+  featured?: boolean
+  relatedProductIds: string[]
+}
+
+export interface ReelItem {
+  id: string
+  title: string
+  caption: string
+  videoUrl?: string
+  posterUrl: string
+  views: string
+  likes: number
+  productId: string
+  tag: string
+  duration: string
+  stylist: string
 }
 
 export type IconName =
@@ -56,6 +104,15 @@ export type IconName =
   | "lock"
   | "eye"
   | "eye-off"
+  | "play"
+  | "pause"
+  | "volume"
+  | "volume-mute"
+  | "book-open"
+  | "calendar"
+  | "clock"
+  | "award"
+  | "sparkles"
 
 export const categories = [
   "Contemporary",
