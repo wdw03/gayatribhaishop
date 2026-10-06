@@ -63,7 +63,10 @@ export function ProductDetailView({
     return () => window.removeEventListener("keydown", handleKeyDown)
   }, [product.images.length])
 
-  // Touch gesture handlers for mobile & tablet swipe
+  // Touch & Mouse gesture handlers for mobile, tablet, and desktop drag-to-slide
+  const isDraggingMouse = useRef<boolean>(false)
+  const mouseStartX = useRef<number | null>(null)
+
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStartX.current = e.targetTouches[0].clientX
   }
@@ -76,13 +79,44 @@ export function ProductDetailView({
     const diff = touchStartX.current - touchEndX.current
     if (Math.abs(diff) > 40) {
       if (diff > 0) {
-        // Swiped left -> Next image (moves to right)
         nextImage()
       } else {
-        // Swiped right -> Previous image (moves to left)
         prevImage()
       }
     }
+  }
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (e.button !== 0) return
+    mouseStartX.current = e.clientX
+    isDraggingMouse.current = false
+  }
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (mouseStartX.current === null) return
+    if (Math.abs(mouseStartX.current - e.clientX) > 10) {
+      isDraggingMouse.current = true
+    }
+  }
+
+  const handleMouseUp = (e: React.MouseEvent) => {
+    if (mouseStartX.current !== null && isDraggingMouse.current) {
+      const diff = mouseStartX.current - e.clientX
+      if (Math.abs(diff) > 35) {
+        if (diff > 0) {
+          nextImage()
+        } else {
+          prevImage()
+        }
+      }
+    }
+    mouseStartX.current = null
+    isDraggingMouse.current = false
+  }
+
+  const handleMouseLeave = () => {
+    mouseStartX.current = null
+    isDraggingMouse.current = false
   }
 
   // Share functionality
@@ -152,6 +186,10 @@ export function ProductDetailView({
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
+            onMouseDown={handleMouseDown}
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUp}
+            onMouseLeave={handleMouseLeave}
           >
             {/* Sliding Track for smooth left-to-right & right-to-left animation */}
             <div
@@ -164,6 +202,7 @@ export function ProductDetailView({
                     src={src}
                     alt={`${product.name} view ${i + 1}`}
                     loading={i === 0 ? "eager" : "lazy"}
+                    draggable={false}
                   />
                 </div>
               ))}
@@ -175,7 +214,11 @@ export function ProductDetailView({
                 <button
                   type="button"
                   className="gallery-nav-arrow gallery-prev"
-                  onClick={prevImage}
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    prevImage()
+                  }}
+                  onMouseDown={(e) => e.stopPropagation()}
                   aria-label="Previous photo (slide left)"
                 >
                   <span
@@ -190,7 +233,11 @@ export function ProductDetailView({
                 <button
                   type="button"
                   className="gallery-nav-arrow gallery-next"
-                  onClick={nextImage}
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    nextImage()
+                  }}
+                  onMouseDown={(e) => e.stopPropagation()}
                   aria-label="Next photo (slide right)"
                 >
                   <Icon name="arrow" size={16} />
