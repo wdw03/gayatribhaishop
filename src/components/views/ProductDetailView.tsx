@@ -9,12 +9,16 @@ import SectionTitle from "../common/SectionTitle"
 import ProductAccordion from "../product/ProductAccordion"
 import ProductCard from "../product/ProductCard"
 
+import type { View } from "../../types"
+
 export interface ProductDetailViewProps {
   product: Product
   openProduct: (p: Product) => void
   wishlisted: boolean
   toggleWish: () => void
   addToCart: (p: Product, size?: string) => void
+  go?: (v: View) => void
+  goBack?: () => void
 }
 
 export function ProductDetailView({
@@ -23,6 +27,8 @@ export function ProductDetailView({
   wishlisted,
   toggleWish,
   addToCart,
+  go,
+  goBack,
 }: ProductDetailViewProps) {
   const [image, setImage] = useState(0)
   const [size, setSize] = useState(() => {
@@ -32,14 +38,15 @@ export function ProductDetailView({
       return ""
     }
   })
+  const [sizeError, setSizeError] = useState(false)
   const [sizeGuide, setSizeGuide] = useState(false)
   const [shareOpen, setShareOpen] = useState(false)
   const [copied, setCopied] = useState(false)
   const [pincode, setPincode] = useState("")
   const [checked, setChecked] = useState(false)
 
-  const touchStartX = useRef<number>(0)
-  const touchEndX = useRef<number>(0)
+  const touchStartPos = useRef<{ x: number; y: number } | null>(null)
+  const touchMovePos = useRef<{ x: number; y: number } | null>(null)
 
   useEffect(() => setImage(0), [product])
 
@@ -68,22 +75,40 @@ export function ProductDetailView({
   const mouseStartX = useRef<number | null>(null)
 
   const handleTouchStart = (e: React.TouchEvent) => {
-    touchStartX.current = e.targetTouches[0].clientX
+    touchStartPos.current = {
+      x: e.touches[0].clientX,
+      y: e.touches[0].clientY,
+    }
+    touchMovePos.current = null
   }
 
   const handleTouchMove = (e: React.TouchEvent) => {
-    touchEndX.current = e.targetTouches[0].clientX
+    if (!touchStartPos.current) return
+    touchMovePos.current = {
+      x: e.touches[0].clientX,
+      y: e.touches[0].clientY,
+    }
   }
 
   const handleTouchEnd = () => {
-    const diff = touchStartX.current - touchEndX.current
-    if (Math.abs(diff) > 40) {
-      if (diff > 0) {
+    if (!touchStartPos.current || !touchMovePos.current) {
+      touchStartPos.current = null
+      touchMovePos.current = null
+      return
+    }
+    const diffX = touchStartPos.current.x - touchMovePos.current.x
+    const diffY = touchStartPos.current.y - touchMovePos.current.y
+
+    // Only slide if horizontal movement is dominant and > 35px
+    if (Math.abs(diffX) > 35 && Math.abs(diffX) > Math.abs(diffY) * 1.3) {
+      if (diffX > 0) {
         nextImage()
       } else {
         prevImage()
       }
     }
+    touchStartPos.current = null
+    touchMovePos.current = null
   }
 
   const handleMouseDown = (e: React.MouseEvent) => {
@@ -157,11 +182,53 @@ export function ProductDetailView({
     }
   }
 
+  const handleAddToCart = () => {
+    if (!size) {
+      const el = document.getElementById("product-size-section")
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "center" })
+      }
+      setSizeError(true)
+      setTimeout(() => setSizeError(false), 2400)
+      return
+    }
+    addToCart(product, size)
+  }
+
   return (
     <div className="product-page">
-      <div className="breadcrumbs">
-        Home / {"Men's Shirts"} / {product.category} /{" "}
-        <strong>{product.name}</strong>
+      {/* Top Bar with Back Navigation & Breadcrumbs */}
+      <div className="product-top-bar">
+        <button
+          type="button"
+          className="product-back-btn"
+          onClick={() => (goBack ? goBack() : go ? go("shop") : window.history.back())}
+          aria-label="Go back to collection"
+        >
+          <span style={{ display: "inline-flex", transform: "rotate(180deg)" }}>
+            <Icon name="arrow" size={14} />
+          </span>
+          <span>Back</span>
+        </button>
+        <div className="breadcrumbs">
+          <button
+            type="button"
+            className="breadcrumb-link"
+            onClick={() => go?.("home")}
+          >
+            Home
+          </button>
+          <span className="breadcrumb-sep">/</span>
+          <button
+            type="button"
+            className="breadcrumb-link"
+            onClick={() => go?.("shop")}
+          >
+            Shirts
+          </button>
+          <span className="breadcrumb-sep">/</span>
+          <span className="breadcrumb-current">{product.name}</span>
+        </div>
       </div>
       <div className="product-detail">
         <div className="gallery">
@@ -322,22 +389,31 @@ export function ProductDetailView({
           <button className="color-swatch active" type="button">
             <img src={product.images[0]} alt={product.color} />
           </button>
-          <div className="selection-head">
+          <div className="selection-head" id="product-size-section">
             <div>
               <strong>Select size</strong>
-              {size && <span>Your preferred size: {size}</span>}
+              {size ? (
+                <span className="selected-size-label">· Size {size}</span>
+              ) : (
+                sizeError && (
+                  <span className="size-required-badge">Please choose a size</span>
+                )
+              )}
             </div>
             <button type="button" onClick={() => setSizeGuide(true)}>
               Size guide
             </button>
           </div>
-          <div className="size-grid">
+          <div className={`size-grid ${sizeError && !size ? "shake" : ""}`}>
             {allSizes.map((s) => (
               <button
                 key={s}
                 disabled={!product.stock[s]}
                 className={size === s ? "active" : ""}
-                onClick={() => selectSize(s)}
+                onClick={() => {
+                  selectSize(s)
+                  setSizeError(false)
+                }}
                 type="button"
               >
                 <span>{s}</span>
@@ -348,7 +424,7 @@ export function ProductDetailView({
             ))}
           </div>
           {!size && (
-            <p className="size-note">
+            <p className={`size-note ${sizeError ? "highlight" : ""}`}>
               Select your size to continue. Relaxed fit—we recommend your usual
               size.
             </p>
@@ -358,10 +434,9 @@ export function ProductDetailView({
           <div className="detail-actions">
             <Button
               className="add-bag"
-              disabled={!size}
-              onClick={() => addToCart(product, size)}
+              onClick={handleAddToCart}
             >
-              Add to bag <Icon name="bag" />
+              {size ? "Add to bag" : "Select size"} <Icon name="bag" />
             </Button>
             <Button
               variant="outline"
@@ -443,21 +518,37 @@ export function ProductDetailView({
       </section>
 
       <div className="mobile-sticky-add">
-        <div>
-          <strong>{money(product.price)}</strong>
-          <span>{size || "Select size"}</span>
+        <div className="mobile-sticky-info">
+          <div className="mobile-sticky-price-row">
+            <strong>{money(product.price)}</strong>
+            <s>{money(product.mrp)}</s>
+          </div>
+          <span className={`mobile-sticky-size ${sizeError && !size ? "size-error-text" : ""}`}>
+            {size ? `Size: ${size}` : "Select size"}
+          </span>
         </div>
         <div className="mobile-sticky-buttons">
           <button
             type="button"
+            className={`mobile-sticky-wish-btn ${wishlisted ? "active" : ""}`}
+            onClick={toggleWish}
+            aria-label="Wishlist item"
+          >
+            <Icon name="heart" size={17} filled={wishlisted} />
+          </button>
+          <button
+            type="button"
             className="mobile-sticky-share-btn"
             onClick={handleShare}
-            aria-label="Share"
+            aria-label="Share product"
           >
-            <Icon name="share" size={18} />
+            <Icon name="share" size={17} />
           </button>
-          <Button disabled={!size} onClick={() => addToCart(product, size)}>
-            Add to bag
+          <Button
+            className={`mobile-sticky-submit-btn ${!size ? "need-size" : ""}`}
+            onClick={handleAddToCart}
+          >
+            {size ? "Add to bag" : "Select size"}
           </Button>
         </div>
       </div>

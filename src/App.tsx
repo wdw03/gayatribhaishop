@@ -18,6 +18,7 @@ import WishlistView from "./components/views/WishlistView"
 
 export function App() {
   const [view, setView] = useState<View>("home")
+  const [previousView, setPreviousView] = useState<View>("home")
   const [selected, setSelected] = useState<Product>(products[0])
   const [wishlist, setWishlist] = useState<string[]>(() => {
     try {
@@ -55,7 +56,7 @@ export function App() {
   }, [cart])
 
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" })
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" })
   }, [view, selected])
 
   useEffect(() => {
@@ -65,14 +66,26 @@ export function App() {
   }, [toast])
 
   const go = (next: View) => {
+    if (view !== "product") {
+      setPreviousView(view)
+    }
     setView(next)
     setMenuOpen(false)
     setSearchOpen(false)
   }
 
+  const goBackFromProduct = () => {
+    setView(previousView === "product" ? "shop" : previousView)
+  }
+
   const openProduct = (product: Product) => {
+    if (view !== "product") {
+      setPreviousView(view)
+    }
     setSelected(product)
-    go("product")
+    setView("product")
+    setMenuOpen(false)
+    setSearchOpen(false)
   }
 
   const toggleWish = (id: string) => {
@@ -142,6 +155,8 @@ export function App() {
             wishlisted={wishlist.includes(selected.id)}
             toggleWish={() => toggleWish(selected.id)}
             addToCart={addToCart}
+            go={go}
+            goBack={goBackFromProduct}
           />
         )}
         {view === "wishlist" && (
@@ -168,13 +183,15 @@ export function App() {
         {view === "admin" && <AdminView />}
       </main>
       {!["checkout", "admin"].includes(view) && <Footer go={go} />}
-      <MobileNav
-        view={view}
-        go={go}
-        cartCount={cart.reduce((n, i) => n + i.quantity, 0)}
-        wishlistCount={wishlist.length}
-        onSearchOpen={() => setSearchOpen(true)}
-      />
+      {view !== "product" && (
+        <MobileNav
+          view={view}
+          go={go}
+          cartCount={cart.reduce((n, i) => n + i.quantity, 0)}
+          wishlistCount={wishlist.length}
+          onSearchOpen={() => setSearchOpen(true)}
+        />
+      )}
       {searchOpen && (
         <SearchOverlay
           query={query}

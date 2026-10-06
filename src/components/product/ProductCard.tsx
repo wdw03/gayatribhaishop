@@ -22,9 +22,12 @@ export function ProductCard({
   const [imgIndex, setImgIndex] = useState(0)
   const [copied, setCopied] = useState(false)
 
-  // Drag / Swipe state tracking to distinguish drag-slide from click-to-open
-  const dragStartX = useRef<number | null>(null)
-  const isDragging = useRef<boolean>(false)
+  // Drag / Swipe / Touch state tracking
+  const mouseStartX = useRef<number | null>(null)
+  const isMouseDragging = useRef<boolean>(false)
+  const touchStartPos = useRef<{ x: number; y: number; time: number } | null>(null)
+  const isHorizontalSwipe = useRef<boolean>(false)
+  const touchOpenedRef = useRef<boolean>(false)
 
   const prevSlide = (e?: React.MouseEvent | React.TouchEvent) => {
     e?.stopPropagation()
@@ -42,21 +45,21 @@ export function ProductCard({
   const handleMouseDown = (e: React.MouseEvent) => {
     // Only handle primary mouse button
     if (e.button !== 0) return
-    dragStartX.current = e.clientX
-    isDragging.current = false
+    mouseStartX.current = e.clientX
+    isMouseDragging.current = false
   }
 
   const handleMouseMove = (e: React.MouseEvent) => {
-    if (dragStartX.current === null) return
-    const diff = dragStartX.current - e.clientX
-    if (Math.abs(diff) > 8) {
-      isDragging.current = true
+    if (mouseStartX.current === null) return
+    const diff = mouseStartX.current - e.clientX
+    if (Math.abs(diff) > 10) {
+      isMouseDragging.current = true
     }
   }
 
   const handleMouseUp = (e: React.MouseEvent) => {
-    if (dragStartX.current !== null && isDragging.current) {
-      const diff = dragStartX.current - e.clientX
+    if (mouseStartX.current !== null && isMouseDragging.current) {
+      const diff = mouseStartX.current - e.clientX
       if (Math.abs(diff) > 30) {
         if (diff > 0) {
           nextSlide(e)
@@ -65,47 +68,80 @@ export function ProductCard({
         }
       }
     }
-    dragStartX.current = null
+    mouseStartX.current = null
     // Reset dragging flag shortly after to allow click handler to inspect it
     setTimeout(() => {
-      isDragging.current = false
-    }, 50)
+      isMouseDragging.current = false
+    }, 60)
   }
 
-  // Touch Swipe handlers for Mobile & Tablet slide
+  // Touch handlers for Mobile & Tablet (Clean tap -> instant open, Swipe -> slide image)
   const handleTouchStart = (e: React.TouchEvent) => {
-    dragStartX.current = e.touches[0].clientX
-    isDragging.current = false
+    const t = e.touches[0]
+    touchStartPos.current = {
+      x: t.clientX,
+      y: t.clientY,
+      time: Date.now(),
+    }
+    isHorizontalSwipe.current = false
   }
 
   const handleTouchMove = (e: React.TouchEvent) => {
-    if (dragStartX.current === null) return
-    const diff = dragStartX.current - e.touches[0].clientX
-    if (Math.abs(diff) > 8) {
-      isDragging.current = true
+    if (!touchStartPos.current) return
+    const t = e.touches[0]
+    const diffX = touchStartPos.current.x - t.clientX
+    const diffY = touchStartPos.current.y - t.clientY
+
+    // If vertical movement is greater, user is scrolling the page vertically!
+    if (Math.abs(diffY) > Math.abs(diffX)) {
+      isHorizontalSwipe.current = false
+      return
+    }
+
+    // Only flag as horizontal swipe if movement is clearly horizontal and > 15px
+    if (Math.abs(diffX) > 15 && Math.abs(diffX) > Math.abs(diffY) * 1.3) {
+      isHorizontalSwipe.current = true
     }
   }
 
   const handleTouchEnd = (e: React.TouchEvent) => {
-    if (dragStartX.current !== null && isDragging.current) {
-      const diff = dragStartX.current - e.changedTouches[0].clientX
-      if (Math.abs(diff) > 30) {
-        if (diff > 0) {
-          nextSlide(e)
-        } else {
-          prevSlide(e)
-        }
+    if (!touchStartPos.current) return
+    const t = e.changedTouches[0]
+    const diffX = touchStartPos.current.x - t.clientX
+    const diffY = touchStartPos.current.y - t.clientY
+    const totalDist = Math.hypot(diffX, diffY)
+    const duration = Date.now() - touchStartPos.current.time
+
+    // 1. Horizontal swipe gesture on photo: slide next/prev
+    if (isHorizontalSwipe.current && Math.abs(diffX) > 30) {
+      if (diffX > 0) {
+        nextSlide(e)
+      } else {
+        prevSlide(e)
       }
     }
-    dragStartX.current = null
-    setTimeout(() => {
-      isDragging.current = false
-    }, 50)
+    // 2. Intentional clean tap on phone: finger barely moved and tap duration < 450ms
+    else if (totalDist < 16 && duration < 450) {
+      touchOpenedRef.current = true
+      onOpen()
+      setTimeout(() => {
+        touchOpenedRef.current = false
+      }, 400)
+    }
+
+    touchStartPos.current = null
+    isHorizontalSwipe.current = false
   }
 
-  // Card click handler - only open if user didn't drag/slide
+  // Card click handler for Desktop mouse or fallback
   const handleCardClick = (e: React.MouseEvent) => {
-    if (isDragging.current) {
+    // If already handled via mobile touch tap, ignore synthetic mouse click
+    if (touchOpenedRef.current) {
+      e.stopPropagation()
+      return
+    }
+    // If mouse was dragging to slide on desktop, ignore
+    if (isMouseDragging.current) {
       e.stopPropagation()
       return
     }
