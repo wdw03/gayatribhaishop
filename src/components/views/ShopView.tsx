@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { products } from "../../products"
 import { allSizes, categories, type Product } from "../../types"
 import Button from "../common/Button"
@@ -53,7 +53,26 @@ export function ShopView({
   const [minDiscount, setMinDiscount] = useState<number>(0)
   const [minRating, setMinRating] = useState<number>(0)
   const [availability, setAvailability] = useState("")
-  const [visible, setVisible] = useState(12)
+  const [visible, setVisible] = useState(24)
+
+  // Whenever any filter changes, reset visible so user sees all filtered products immediately
+  useEffect(() => {
+    setVisible(24)
+  }, [
+    category,
+    size,
+    priceRange,
+    selectedColors,
+    selectedFit,
+    selectedSleeve,
+    selectedCollar,
+    selectedPattern,
+    selectedFabric,
+    selectedOccasion,
+    minDiscount,
+    minRating,
+    availability,
+  ])
 
   // Toggle color filter
   const toggleColor = (c: string) => {
@@ -1085,7 +1104,10 @@ export function ShopView({
 
           {/* Product Cards Grid or Empty State */}
           {list.length > 0 ? (
-            <div className="product-grid shop-grid">
+            <div
+              key={`${category}-${size}-${priceRange}-${selectedColors.join(",")}-${selectedFit}-${selectedSleeve}-${selectedCollar}-${selectedPattern}-${selectedFabric}-${selectedOccasion}-${minDiscount}-${minRating}-${availability}-${sort}`}
+              className="product-grid shop-grid"
+            >
               {list.slice(0, visible).map((p) => (
                 <ProductCard
                   key={p.id}
