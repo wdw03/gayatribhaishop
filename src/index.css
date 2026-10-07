@@ -754,6 +754,8 @@ h1, h2 { font-family: "Italiana", Georgia, serif; font-weight: 400; }
   color: #ffffff !important;
   box-shadow: 0 4px 14px rgba(21, 128, 61, 0.28) !important;
 }
+.card-badge-wrap { display: contents; }
+.card-wish-action-btn { display: none; }
 
 .collection-banner { min-height: clamp(420px, 48vh, 560px); position: relative; display: flex; align-items: center; justify-content: flex-end; padding: clamp(32px, 5vw, 60px); color: #fff; overflow: hidden; }
 .collection-banner > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 35%; filter: brightness(.62) saturate(.8); }
@@ -1874,56 +1876,72 @@ footer > div > button { border: 0; background: none; color: #9ba69e; padding: 0;
 
   .quick-actions { display: none !important; }
 
+  /* Mobile: Clean photo presentation - zero overlays covering model face */
+  .card-top-actions {
+    display: none !important;
+  }
+
+  .card-nav-arrow {
+    display: none !important;
+  }
+
+  /* Badge and Low-stock moved to bottom-left away from face/collar */
+  .card-badge-wrap {
+    position: absolute !important;
+    bottom: 8px !important;
+    left: 8px !important;
+    z-index: 10 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 3px !important;
+    pointer-events: none !important;
+  }
+
+  .card-badge-wrap .badge,
   .badge {
-    top: 7px !important;
-    left: 7px !important;
-    padding: 3.5px 7px !important;
+    position: static !important;
+    top: auto !important;
+    bottom: auto !important;
+    left: auto !important;
+    right: auto !important;
+    padding: 3px 6px !important;
     font-size: 7.5px !important;
     font-weight: 700 !important;
     letter-spacing: 0.08em !important;
     border-radius: 3px !important;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12) !important;
-  }
-  .low-stock {
     display: inline-block !important;
+  }
+
+  .card-badge-wrap .low-stock,
+  .low-stock {
+    position: static !important;
     top: auto !important;
-    bottom: 8px !important;
-    left: 7px !important;
-    padding: 3px 6px !important;
-    font-size: 7.5px !important;
+    bottom: auto !important;
+    left: auto !important;
+    right: auto !important;
+    display: inline-block !important;
+    padding: 2.5px 5.5px !important;
+    font-size: 7px !important;
     font-weight: 600 !important;
     border-radius: 3px !important;
     background: rgba(244, 228, 214, 0.95) !important;
     color: #8b3826 !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08) !important;
   }
 
-  .card-top-actions {
-    top: 7px !important;
-    right: 7px !important;
-    gap: 6px !important;
-  }
-  .card-top-actions .wish-btn,
-  .card-top-actions .card-share-btn,
-  .wish-btn {
-    width: 32px !important;
-    height: 32px !important;
-    border-radius: 50% !important;
-    background: rgba(255, 255, 255, 0.92) !important;
-    backdrop-filter: blur(8px) !important;
-    -webkit-backdrop-filter: blur(8px) !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
-    color: var(--ink) !important;
-  }
-  .card-top-actions .wish-btn.active {
-    color: #c53030 !important;
-  }
-
+  /* Dots on bottom right on mobile */
   .card-mini-dots {
     opacity: 1 !important;
     bottom: 8px !important;
+    right: 8px !important;
+    left: auto !important;
+    transform: none !important;
     padding: 3px 6px !important;
-    background: rgba(14, 28, 20, 0.5) !important;
+    background: rgba(14, 28, 20, 0.55) !important;
     backdrop-filter: blur(6px) !important;
+    -webkit-backdrop-filter: blur(6px) !important;
     border-radius: 10px !important;
   }
   .card-dot {
@@ -1931,29 +1949,23 @@ footer > div > button { border: 0; background: none; color: #9ba69e; padding: 0;
     height: 4.5px !important;
   }
   .card-dot.active {
-    width: 13px !important;
+    width: 12px !important;
   }
 
-  .card-nav-arrow {
-    opacity: 0.88 !important;
-    width: 28px !important;
-    height: 28px !important;
-    background: rgba(255, 255, 255, 0.9) !important;
-    backdrop-filter: blur(6px) !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12) !important;
-  }
-  .card-nav-arrow.card-prev { left: 5px !important; }
-  .card-nav-arrow.card-next { right: 5px !important; }
-
-  /* Mobile Dedicated Add to Bag Button */
+  /* Mobile Bottom Action: Add to Bag (flex: 1) + Wishlist (36px) side-by-side */
   .product-card-action {
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
     margin-top: 10px !important;
     width: 100% !important;
   }
   .card-add-to-bag-btn {
-    width: 100% !important;
-    min-height: 38px !important;
-    height: 38px !important;
+    flex: 1 1 auto !important;
+    width: auto !important;
+    min-height: 36px !important;
+    height: 36px !important;
+    padding: 0 10px !important;
     border-radius: 6px !important;
     border: none !important;
     background: var(--ink) !important;
@@ -1966,7 +1978,7 @@ footer > div > button { border: 0; background: none; color: #9ba69e; padding: 0;
     font-weight: 600 !important;
     letter-spacing: 0.04em !important;
     cursor: pointer !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
     transition: transform 0.15s ease, background 0.15s ease !important;
   }
   .card-add-to-bag-btn:active {
@@ -1978,6 +1990,32 @@ footer > div > button { border: 0; background: none; color: #9ba69e; padding: 0;
     color: #ffffff !important;
     box-shadow: 0 3px 12px rgba(21, 128, 61, 0.3) !important;
   }
+
+  .card-wish-action-btn {
+    display: inline-flex !important;
+    flex: 0 0 36px !important;
+    width: 36px !important;
+    min-width: 36px !important;
+    height: 36px !important;
+    border-radius: 6px !important;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+    background: #fbfaf8 !important;
+    color: var(--ink) !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    transition: all 0.18s ease !important;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04) !important;
+  }
+  .card-wish-action-btn:active {
+    transform: scale(0.92) !important;
+  }
+  .card-wish-action-btn.active {
+    background: #fef2f2 !important;
+    border-color: #fca5a5 !important;
+    color: #dc2626 !important;
+  }
+
 
   .product-info {
     padding: 10px 10px 12px !important;
@@ -2430,6 +2468,13 @@ footer > div > button { border: 0; background: none; color: #9ba69e; padding: 0;
     font-size: 13px !important;
     border-radius: 8px !important;
     letter-spacing: 0.05em !important;
+  }
+  .shop-grid.mobile-cols-1 .card-wish-action-btn {
+    flex: 0 0 44px !important;
+    width: 44px !important;
+    min-width: 44px !important;
+    height: 44px !important;
+    border-radius: 8px !important;
   }
 
   .load-more {

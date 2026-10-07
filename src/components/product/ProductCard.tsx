@@ -266,14 +266,18 @@ export function ProductCard({
           </>
         )}
 
-        <span
-          className={`badge ${product.badge === "Limited" ? "badge-dark" : ""}`}
-        >
-          {product.badge}
-        </span>
-        {Object.values(product.stock).some((n) => n > 0 && n < 4) && (
-          <span className="low-stock">Low stock</span>
-        )}
+        <div className="card-badge-wrap">
+          {Boolean(product.badge) && (
+            <span
+              className={`badge ${product.badge === "Limited" ? "badge-dark" : ""}`}
+            >
+              {product.badge}
+            </span>
+          )}
+          {Object.values(product.stock).some((n) => n > 0 && n < 4) && (
+            <span className="low-stock">Low stock</span>
+          )}
+        </div>
 
         {/* Card Top Action Buttons (Wishlist & Share) */}
         <div
@@ -333,6 +337,18 @@ export function ProductCard({
           >
             <Icon name={isAdded ? "check" : "bag"} size={13} />
             <span>{isAdded ? "Added to Bag" : "Add to Bag"}</span>
+          </button>
+          <button
+            type="button"
+            className={`card-wish-action-btn ${wishlisted ? "active" : ""}`}
+            onClick={(e) => {
+              e.stopPropagation()
+              onWish()
+            }}
+            aria-label="Toggle wishlist"
+            title={wishlisted ? "Remove from wishlist" : "Add to wishlist"}
+          >
+            <Icon name="heart" size={15} filled={wishlisted} />
           </button>
         </div>
       </div>
