@@ -1,0 +1,6 @@
+# robots.txt for GAYATRI / AVYR Haute Artisanal Shirts
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://gayatribhaishop-zkde-eight.vercel.app/sitemap.xml

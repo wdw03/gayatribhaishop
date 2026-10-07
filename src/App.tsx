@@ -138,6 +138,41 @@ export function App() {
     window.scrollTo({ top: 0, left: 0, behavior: "instant" })
   }, [view, selected])
 
+  // Dynamic SEO Meta & Document Title Manager
+  useEffect(() => {
+    let pageTitle =
+      "AVYR by Gayatri | Haute Artisanal Hand-Embroidered Shirts & Luxury Linen Resortwear"
+    let pageDesc =
+      "Discover AVYR by Gayatri: Haute artisanal menswear, hand-embroidered pure linen shirts, Cuban camp collar silhouettes, and luxury resortwear."
+
+    if (view === "shop") {
+      pageTitle = "All Shirts | AVYR by Gayatri Haute Artisanal Menswear"
+      pageDesc =
+        "Browse the complete collection of hand-embroidered linen shirts, contemporary resort silhouettes, and pure European flax craftsmanship."
+    } else if (view === "product" && selected) {
+      pageTitle = `${selected.name} · ₹${selected.price} | AVYR by Gayatri`
+      pageDesc = `${selected.name} (${selected.fabric}) - ${selected.description.slice(0, 150)}...`
+    } else if (view === "blog") {
+      pageTitle = "The AVYR Journal | Stories of Craft, Linen & Style"
+      pageDesc =
+        "Read editorial essays on French linen science, Cuban collar resort dressing, and generational hand needlework."
+    } else if (view === "wishlist") {
+      pageTitle = "Artisanal Wishlist | AVYR by Gayatri"
+    } else if (view === "bag") {
+      pageTitle = `Shopping Bag (${cart.length}) | AVYR by Gayatri`
+    } else if (view === "checkout") {
+      pageTitle = "Secure Atelier Checkout | AVYR by Gayatri"
+    } else if (view === "account") {
+      pageTitle = "Client Atelier Profile | AVYR by Gayatri"
+    }
+
+    document.title = pageTitle
+    const metaDesc = document.querySelector('meta[name="description"]')
+    if (metaDesc) {
+      metaDesc.setAttribute("content", pageDesc)
+    }
+  }, [view, selected, cart.length])
+
   useEffect(() => {
     if (!toast) return
     const timer = window.setTimeout(() => setToast(""), 2400)

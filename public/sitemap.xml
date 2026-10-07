@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <!-- Core Pages -->
+  <url>
+    <loc>https://gayatribhaishop-zkde-eight.vercel.app/</loc>
+    <lastmod>2026-04-18</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://gayatribhaishop-zkde-eight.vercel.app/#shop</loc>
+    <lastmod>2026-04-18</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://gayatribhaishop-zkde-eight.vercel.app/#blog</loc>
+    <lastmod>2026-04-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Featured Artisanal Shirts Products -->
+  <url>
+    <loc>https://gayatribhaishop-zkde-eight.vercel.app/#product-azure-leaf-hand-embroidered-shirt</loc>
+    <lastmod>2026-04-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://gayatribhaishop-zkde-eight.vercel.app/#product-deep-sea-coco-hand-embroidered-shirt</loc>
+    <lastmod>2026-04-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://gayatribhaishop-zkde-eight.vercel.app/#product-coastal-king-linen-shirt</loc>
+    <lastmod>2026-04-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://gayatribhaishop-zkde-eight.vercel.app/#product-botanical-palm-embroidered-shirt</loc>
+    <lastmod>2026-04-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://gayatribhaishop-zkde-eight.vercel.app/#product-riviera-crochet-trim-shirt</loc>
+    <lastmod>2026-04-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <!-- Editorial Articles & Craft Essays -->
+  <url>
+    <loc>https://gayatribhaishop-zkde-eight.vercel.app/#blog-connoisseurs-guide-french-linen-shirts</loc>
+    <lastmod>2026-04-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://gayatribhaishop-zkde-eight.vercel.app/#blog-cuban-collar-revival-resort-dressing-guide</loc>
+    <lastmod>2026-04-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://gayatribhaishop-zkde-eight.vercel.app/#blog-art-of-hand-embroidery-behind-the-atelier</loc>
+    <lastmod>2026-04-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://gayatribhaishop-zkde-eight.vercel.app/#blog-styling-statement-shirts-tropical-evenings</loc>
+    <lastmod>2026-04-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://gayatribhaishop-zkde-eight.vercel.app/#blog-slow-fashion-manifesto-clothing-that-lasts</loc>
+    <lastmod>2026-03-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+</urlset>
