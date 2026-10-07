@@ -144,7 +144,7 @@ export function HomeView({
             begins with a story, travels through the hands of skilled artisans,
             and is made in quantities small enough to remain personal.
           </p>
-          <Button variant="text">
+          <Button variant="text" onClick={() => go("blog")}>
             Our craft story <Icon name="arrow" />
           </Button>
           <blockquote>
