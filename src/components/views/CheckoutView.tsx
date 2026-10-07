@@ -53,7 +53,9 @@ export function AddressStep({
                 <div>
                   <strong>
                     {addr.name} <small>{addr.type}</small>
-                    {addr.isDefault && <b className="addr-default-tag">DEFAULT</b>}
+                    {addr.isDefault && (
+                      <b className="addr-default-tag">DEFAULT</b>
+                    )}
                   </strong>
                   <p>
                     {addr.street}

@@ -213,7 +213,7 @@ export function App() {
       prev.map((a) => ({
         ...a,
         isDefault: a.id === id,
-      }))
+      })),
     )
   }
 

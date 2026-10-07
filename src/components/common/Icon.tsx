@@ -73,9 +73,7 @@ export function Icon({ name, size = 20, filled = false }: IconProps) {
         <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
       </>
     ),
-    edit: (
-      <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z" />
-    ),
+    edit: <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z" />,
     "map-pin": (
       <>
         <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
@@ -111,7 +109,12 @@ export function Icon({ name, size = 20, filled = false }: IconProps) {
         <line x1="2" x2="22" y1="2" y2="22" />
       </>
     ),
-    play: <polygon points="5 3 19 12 5 21 5 3" fill={filled ? "currentColor" : "currentColor"} />,
+    play: (
+      <polygon
+        points="5 3 19 12 5 21 5 3"
+        fill={filled ? "currentColor" : "currentColor"}
+      />
+    ),
     pause: (
       <>
         <rect x="6" y="4" width="4" height="16" fill="currentColor" />
@@ -161,6 +164,13 @@ export function Icon({ name, size = 20, filled = false }: IconProps) {
     sparkles: (
       <>
         <path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z" />
+      </>
+    ),
+    "grid-1": <rect x="4" y="4" width="16" height="16" rx="2.5" />,
+    "grid-2": (
+      <>
+        <rect x="3.5" y="4" width="7.5" height="16" rx="2" />
+        <rect x="13" y="4" width="7.5" height="16" rx="2" />
       </>
     ),
   }

@@ -60,7 +60,9 @@ export function LoginView({ onLogin, go, showToast }: LoginViewProps) {
 
       const loggedUser: User = {
         id: "usr_" + Date.now().toString(36),
-        name: capitalizedName.includes("Arjun") ? "Arjun Mehta" : capitalizedName,
+        name: capitalizedName.includes("Arjun")
+          ? "Arjun Mehta"
+          : capitalizedName,
         email: loginEmail.trim().toLowerCase(),
         phone: "+91 98765 43210",
         joinedDate: "April 2026",
@@ -80,7 +82,11 @@ export function LoginView({ onLogin, go, showToast }: LoginViewProps) {
       setError("Please enter your full name.")
       return
     }
-    if (!regEmail.trim() || !regEmail.includes("@") || !regEmail.includes(".")) {
+    if (
+      !regEmail.trim() ||
+      !regEmail.includes("@") ||
+      !regEmail.includes(".")
+    ) {
       setError("Please enter a valid email address.")
       return
     }
@@ -385,8 +391,8 @@ export function LoginView({ onLogin, go, showToast }: LoginViewProps) {
             </div>
 
             <p className="auth-terms-note">
-              By creating an account, you agree to AVYR Atelier’s Terms of Service
-              and Privacy Policy.
+              By creating an account, you agree to AVYR Atelier’s Terms of
+              Service and Privacy Policy.
             </p>
 
             <Button

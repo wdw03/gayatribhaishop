@@ -141,18 +141,14 @@ export default function ShopFilterSidebar({
                     ).length
                   : products.filter(
                       (p) =>
-                        p.category
-                          .toLowerCase()
-                          .includes(x.toLowerCase()) ||
+                        p.category.toLowerCase().includes(x.toLowerCase()) ||
                         p.name.toLowerCase().includes(x.toLowerCase()),
                     ).length
 
             return (
               <label
                 key={x}
-                className={`filter-radio-label ${
-                  isSelected ? "selected" : ""
-                }`}
+                className={`filter-radio-label ${isSelected ? "selected" : ""}`}
               >
                 <input
                   type="radio"
@@ -207,16 +203,14 @@ export default function ShopFilterSidebar({
             {
               id: "1500-2000",
               label: "₹1,500 – ₹1,999",
-              count: products.filter(
-                (p) => p.price >= 1500 && p.price <= 2000,
-              ).length,
+              count: products.filter((p) => p.price >= 1500 && p.price <= 2000)
+                .length,
             },
             {
               id: "2000-2500",
               label: "₹2,000 – ₹2,499",
-              count: products.filter(
-                (p) => p.price > 2000 && p.price <= 2500,
-              ).length,
+              count: products.filter((p) => p.price > 2000 && p.price <= 2500)
+                .length,
             },
             {
               id: "above2500",
@@ -228,9 +222,7 @@ export default function ShopFilterSidebar({
             return (
               <label
                 key={p.id}
-                className={`filter-radio-label ${
-                  isSelected ? "selected" : ""
-                }`}
+                className={`filter-radio-label ${isSelected ? "selected" : ""}`}
               >
                 <input
                   type="radio"
@@ -268,8 +260,7 @@ export default function ShopFilterSidebar({
                   className="color-dot"
                   style={{
                     backgroundColor: col.hex,
-                    border:
-                      col.name === "White" ? "1px solid #ccc" : "none",
+                    border: col.name === "White" ? "1px solid #ccc" : "none",
                   }}
                 />
                 <span className="color-label">{col.label}</span>
@@ -291,9 +282,7 @@ export default function ShopFilterSidebar({
             return (
               <label
                 key={f.id}
-                className={`filter-radio-label ${
-                  isSelected ? "selected" : ""
-                }`}
+                className={`filter-radio-label ${isSelected ? "selected" : ""}`}
               >
                 <input
                   type="radio"
@@ -324,9 +313,7 @@ export default function ShopFilterSidebar({
             return (
               <label
                 key={s.id}
-                className={`filter-radio-label ${
-                  isSelected ? "selected" : ""
-                }`}
+                className={`filter-radio-label ${isSelected ? "selected" : ""}`}
               >
                 <input
                   type="radio"
@@ -357,9 +344,7 @@ export default function ShopFilterSidebar({
             return (
               <label
                 key={c.id}
-                className={`filter-radio-label ${
-                  isSelected ? "selected" : ""
-                }`}
+                className={`filter-radio-label ${isSelected ? "selected" : ""}`}
               >
                 <input
                   type="radio"
@@ -399,17 +384,13 @@ export default function ShopFilterSidebar({
             return (
               <label
                 key={pt.id}
-                className={`filter-radio-label ${
-                  isSelected ? "selected" : ""
-                }`}
+                className={`filter-radio-label ${isSelected ? "selected" : ""}`}
               >
                 <input
                   type="radio"
                   name="pattern-filter"
                   checked={isSelected}
-                  onChange={() =>
-                    setSelectedPattern(isSelected ? "" : pt.id)
-                  }
+                  onChange={() => setSelectedPattern(isSelected ? "" : pt.id)}
                 />
                 <span className="filter-item-name">{pt.label}</span>
                 <span className="filter-item-count">{pt.count}</span>
@@ -434,17 +415,13 @@ export default function ShopFilterSidebar({
             return (
               <label
                 key={fb.id}
-                className={`filter-radio-label ${
-                  isSelected ? "selected" : ""
-                }`}
+                className={`filter-radio-label ${isSelected ? "selected" : ""}`}
               >
                 <input
                   type="radio"
                   name="fabric-filter"
                   checked={isSelected}
-                  onChange={() =>
-                    setSelectedFabric(isSelected ? "" : fb.id)
-                  }
+                  onChange={() => setSelectedFabric(isSelected ? "" : fb.id)}
                 />
                 <span className="filter-item-name">{fb.label}</span>
                 <span className="filter-item-count">{fb.count}</span>
@@ -470,17 +447,13 @@ export default function ShopFilterSidebar({
             return (
               <label
                 key={oc.id}
-                className={`filter-radio-label ${
-                  isSelected ? "selected" : ""
-                }`}
+                className={`filter-radio-label ${isSelected ? "selected" : ""}`}
               >
                 <input
                   type="radio"
                   name="occasion-filter"
                   checked={isSelected}
-                  onChange={() =>
-                    setSelectedOccasion(isSelected ? "" : oc.id)
-                  }
+                  onChange={() => setSelectedOccasion(isSelected ? "" : oc.id)}
                 />
                 <span className="filter-item-name">{oc.label}</span>
                 <span className="filter-item-count">{oc.count}</span>
@@ -513,9 +486,7 @@ export default function ShopFilterSidebar({
             return (
               <label
                 key={d.val}
-                className={`filter-radio-label ${
-                  isSelected ? "selected" : ""
-                }`}
+                className={`filter-radio-label ${isSelected ? "selected" : ""}`}
               >
                 <input
                   type="radio"
@@ -532,11 +503,7 @@ export default function ShopFilterSidebar({
       </FilterGroup>
 
       {/* 12. Rating Filter */}
-      <FilterGroup
-        title="Rating"
-        activeCount={minRating > 0 ? 1 : 0}
-        collapsed
-      >
+      <FilterGroup title="Rating" activeCount={minRating > 0 ? 1 : 0} collapsed>
         <div className="filter-checkbox-list">
           {[
             {
@@ -554,9 +521,7 @@ export default function ShopFilterSidebar({
             return (
               <label
                 key={r.val}
-                className={`filter-radio-label ${
-                  isSelected ? "selected" : ""
-                }`}
+                className={`filter-radio-label ${isSelected ? "selected" : ""}`}
               >
                 <input
                   type="radio"
@@ -593,8 +558,7 @@ export default function ShopFilterSidebar({
             {
               id: "bestseller",
               label: "Best Sellers",
-              count: products.filter((p) => p.badge === "Bestseller")
-                .length,
+              count: products.filter((p) => p.badge === "Bestseller").length,
             },
             {
               id: "limited",
@@ -606,9 +570,7 @@ export default function ShopFilterSidebar({
             return (
               <label
                 key={av.id}
-                className={`filter-radio-label ${
-                  isSelected ? "selected" : ""
-                }`}
+                className={`filter-radio-label ${isSelected ? "selected" : ""}`}
               >
                 <input
                   type="radio"
@@ -625,10 +587,7 @@ export default function ShopFilterSidebar({
       </FilterGroup>
 
       {/* Mobile Drawer Bottom CTA */}
-      <Button
-        className="apply-filter"
-        onClick={() => setFiltersOpen(false)}
-      >
+      <Button className="apply-filter" onClick={() => setFiltersOpen(false)}>
         Show {totalCount} shirts
       </Button>
     </aside>

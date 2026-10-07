@@ -90,7 +90,9 @@ export function Header({
   return (
     <>
       <header
-        className={`header ${isScrolled ? "scrolled" : ""} ${menuOpen ? "menu-active" : ""}`}
+        className={`header ${isScrolled ? "scrolled" : ""} ${
+          menuOpen ? "menu-active" : ""
+        }`}
       >
         <div className="header-inner">
           {/* Mobile Hamburger Menu Toggle */}
@@ -122,7 +124,10 @@ export function Header({
           </button>
 
           {/* Desktop Primary Navigation */}
-          <nav className="desktop-nav desktop-only" aria-label="Main Navigation">
+          <nav
+            className="desktop-nav desktop-only"
+            aria-label="Main Navigation"
+          >
             {navItems.map((item) => {
               const isActive =
                 item.target === view &&
@@ -156,7 +161,9 @@ export function Header({
               title="Search products (⌘K)"
             >
               <Icon name="search" size={15} />
-              <span className="search-placeholder">Search shirts, linen...</span>
+              <span className="search-placeholder">
+                Search shirts, linen...
+              </span>
               <kbd className="search-shortcut">⌘K</kbd>
             </button>
 
@@ -286,13 +293,17 @@ export function Header({
             {navItems.map((item) => (
               <button
                 key={item.label}
-                className={`drawer-link ${view === item.target ? "active" : ""}`}
+                className={`drawer-link ${
+                  view === item.target ? "active" : ""
+                }`}
                 onClick={() => handleNavClick(item.target)}
               >
                 <span className="drawer-link-text">
                   {item.target === "blog" ? "Journal & Blog" : item.label}
                 </span>
-                {item.badge && <span className="drawer-sale-badge">{item.badge}</span>}
+                {item.badge && (
+                  <span className="drawer-sale-badge">{item.badge}</span>
+                )}
                 <Icon name="arrow" size={15} />
               </button>
             ))}

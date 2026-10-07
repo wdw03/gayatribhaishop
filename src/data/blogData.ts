@@ -4,7 +4,8 @@ export const BLOG_POSTS: BlogPost[] = [
   {
     id: "blog-1",
     slug: "connoisseurs-guide-french-linen-shirts",
-    title: "The Connoisseur’s Guide to French Linen: Why Weight, Weave & Slub Matter",
+    title:
+      "The Connoisseur’s Guide to French Linen: Why Weight, Weave & Slub Matter",
     subtitle:
       "Understanding natural flax fibers, moisture breathability, and why true artisanal linen gets softer with every summer wear.",
     excerpt:
@@ -30,7 +31,12 @@ export const BLOG_POSTS: BlogPost[] = [
     coverImage: "/assets/site_banners/slide1_desktop.jpg",
     readTime: "5 min read",
     date: "April 18, 2026",
-    tags: ["French Linen", "Fabric Guide", "Summer Menswear", "Artisanal Weave"],
+    tags: [
+      "French Linen",
+      "Fabric Guide",
+      "Summer Menswear",
+      "Artisanal Weave",
+    ],
     featured: true,
     relatedProductIds: [
       "69ba28a30b819d3f52ce23a2",
@@ -78,7 +84,8 @@ export const BLOG_POSTS: BlogPost[] = [
   {
     id: "blog-3",
     slug: "art-of-hand-embroidery-behind-the-atelier",
-    title: "The Vanishing Art of Hand-Guided Needlecraft in Contemporary Menswear",
+    title:
+      "The Vanishing Art of Hand-Guided Needlecraft in Contemporary Menswear",
     subtitle:
       "Inside our Surat atelier, where generational master karigars spend up to 48 hours breathing life into single shirts.",
     excerpt:
@@ -104,7 +111,12 @@ export const BLOG_POSTS: BlogPost[] = [
     coverImage: "/assets/site_media/instagram_lookbook_ing3.jpg",
     readTime: "6 min read",
     date: "April 08, 2026",
-    tags: ["Artisan Craft", "Hand Embroidery", "Sustainable Fashion", "Slow Living"],
+    tags: [
+      "Artisan Craft",
+      "Hand Embroidery",
+      "Sustainable Fashion",
+      "Slow Living",
+    ],
     featured: false,
     relatedProductIds: [
       "69ba28a30b819d3f52ce23a2",
@@ -115,7 +127,8 @@ export const BLOG_POSTS: BlogPost[] = [
   {
     id: "blog-4",
     slug: "styling-statement-shirts-tropical-evenings",
-    title: "Dressing After Twilight: Styling Statement Shirts for Tropical Evenings",
+    title:
+      "Dressing After Twilight: Styling Statement Shirts for Tropical Evenings",
     subtitle:
       "Transitioning from sunset yachts to candlelit dinner terraces with midnight palettes and tonal stitch finishes.",
     excerpt:
@@ -141,7 +154,12 @@ export const BLOG_POSTS: BlogPost[] = [
     coverImage: "/assets/site_banners/slide3_desktop.jpg",
     readTime: "4 min read",
     date: "April 02, 2026",
-    tags: ["Evening Wear", "Night Outfits", "Luxe Menswear", "Statement Shirts"],
+    tags: [
+      "Evening Wear",
+      "Night Outfits",
+      "Luxe Menswear",
+      "Statement Shirts",
+    ],
     featured: false,
     relatedProductIds: [
       "69b87fc153c30650d32fcfc3",
@@ -178,7 +196,12 @@ export const BLOG_POSTS: BlogPost[] = [
     coverImage: "/assets/site_banners/home_banner_secondary.jpeg",
     readTime: "5 min read",
     date: "March 28, 2026",
-    tags: ["Slow Fashion", "Sustainability", "Limited Edition", "Artisan Economy"],
+    tags: [
+      "Slow Fashion",
+      "Sustainability",
+      "Limited Edition",
+      "Artisan Economy",
+    ],
     featured: false,
     relatedProductIds: [
       "69ba28a30b819d3f52ce23a2",

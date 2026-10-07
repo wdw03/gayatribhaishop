@@ -83,7 +83,9 @@ export function MobileNav({
       >
         <div className="tab-icon-wrap">
           <Icon name="bag" size={18} />
-          {cartCount > 0 && <b className="tab-badge bag-tab-badge">{cartCount}</b>}
+          {cartCount > 0 && (
+            <b className="tab-badge bag-tab-badge">{cartCount}</b>
+          )}
         </div>
         <span className="tab-label">Bag</span>
         {view === "bag" && <span className="tab-indicator" />}

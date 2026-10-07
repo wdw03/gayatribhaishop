@@ -31,9 +31,7 @@ export function Announcement() {
 
   const next = () => setIndex((prev) => (prev + 1) % ANNOUNCEMENTS.length)
   const prev = () =>
-    setIndex(
-      (prev) => (prev - 1 + ANNOUNCEMENTS.length) % ANNOUNCEMENTS.length,
-    )
+    setIndex((prev) => (prev - 1 + ANNOUNCEMENTS.length) % ANNOUNCEMENTS.length)
 
   const active = ANNOUNCEMENTS[index]
 

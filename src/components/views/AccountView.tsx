@@ -142,8 +142,8 @@ export function AccountView({
           <span className="eyebrow">Atelier Client Privilege</span>
           <h2>Sign In to View Your Account</h2>
           <p>
-            Sign in with your email to view your personalized profile, saved delivery
-            addresses, order history, and artisanal wishlist.
+            Sign in with your email to view your personalized profile, saved
+            delivery addresses, order history, and artisanal wishlist.
           </p>
           <div className="guest-actions">
             <Button onClick={() => go("login")}>
@@ -257,25 +257,26 @@ export function AccountView({
     showToast(
       editingAddressId
         ? "Address updated successfully!"
-        : "New address added successfully!"
+        : "New address added successfully!",
     )
   }
 
   // Get User Initials for Monogram Avatar
-  const initials = user.name
-    .split(" ")
-    .map((n) => n[0])
-    .filter(Boolean)
-    .slice(0, 2)
-    .join("")
-    .toUpperCase() || "AV"
+  const initials =
+    user.name
+      .split(" ")
+      .map((n) => n[0])
+      .filter(Boolean)
+      .slice(0, 2)
+      .join("")
+      .toUpperCase() || "AV"
 
   return (
     <div className="account-page">
       {/* Sidebar Navigation */}
       <aside className="account-sidebar">
         <span className="eyebrow">Client Atelier</span>
-        
+
         {/* User Card */}
         <div className="account-person">
           <div className="user-avatar-monogram">{initials}</div>
@@ -287,7 +288,9 @@ export function AccountView({
               </span>
             </div>
             <small>{user.email}</small>
-            {user.phone && <small className="user-phone-line">{user.phone}</small>}
+            {user.phone && (
+              <small className="user-phone-line">{user.phone}</small>
+            )}
             <span className="member-tier">Patron Member</span>
           </div>
           <button
@@ -388,9 +391,12 @@ export function AccountView({
                 <span>AVYR CLUB PRIVÉ · VIP ATELIER</span>
               </div>
               <div className="cover-title-group">
-                <h2>Welcome to your Private Atelier, {user.name.split(" ")[0]}</h2>
+                <h2>
+                  Welcome to your Private Atelier, {user.name.split(" ")[0]}
+                </h2>
                 <p>
-                  Generational bespoke tailoring, priority order dispatch, and private drop access.
+                  Generational bespoke tailoring, priority order dispatch, and
+                  private drop access.
                 </p>
               </div>
               <div className="cover-perks-strip">
@@ -398,7 +404,8 @@ export function AccountView({
                   <Icon name="award" size={13} /> Gold Artisan Tier
                 </span>
                 <span className="perk-pill">
-                  <Icon name="truck" size={13} /> Complimentary 48h Express Shipping
+                  <Icon name="truck" size={13} /> Complimentary 48h Express
+                  Shipping
                 </span>
                 <span className="perk-pill">
                   <Icon name="shield" size={13} /> 100% Craft Guarantee
@@ -408,17 +415,25 @@ export function AccountView({
 
             {/* Quick Stat Counter Cards */}
             <div className="profile-stats-strip">
-              <div className="profile-stat-box" onClick={() => setTab("Orders")}>
+              <div
+                className="profile-stat-box"
+                onClick={() => setTab("Orders")}
+              >
                 <span className="stat-label">Active Orders</span>
                 <strong className="stat-value">1</strong>
-                <small className="stat-hint">Order #AVY260102 · In transit →</small>
+                <small className="stat-hint">
+                  Order #AVY260102 · In transit →
+                </small>
               </div>
               <div className="profile-stat-box">
                 <span className="stat-label">Craft Points</span>
                 <strong className="stat-value gold-text">1,450</strong>
                 <small className="stat-hint">Worth ₹1,450 on next order</small>
               </div>
-              <div className="profile-stat-box" onClick={() => setTab("Addresses")}>
+              <div
+                className="profile-stat-box"
+                onClick={() => setTab("Addresses")}
+              >
                 <span className="stat-label">Saved Addresses</span>
                 <strong className="stat-value">{addresses.length}</strong>
                 <small className="stat-hint">Manage 1-click delivery →</small>
@@ -502,10 +517,7 @@ export function AccountView({
                   <h3>Saved Delivery Addresses</h3>
                   <p>Addresses used during checkout for 1-click delivery.</p>
                 </div>
-                <Button
-                  variant="outline"
-                  onClick={() => setTab("Addresses")}
-                >
+                <Button variant="outline" onClick={() => setTab("Addresses")}>
                   Manage All Addresses ({addresses.length})
                 </Button>
               </div>
@@ -514,7 +526,9 @@ export function AccountView({
                 {addresses.slice(0, 2).map((addr) => (
                   <div
                     key={addr.id}
-                    className={`address-mini-card ${addr.isDefault ? "default" : ""}`}
+                    className={`address-mini-card ${
+                      addr.isDefault ? "default" : ""
+                    }`}
                   >
                     <div className="addr-mini-top">
                       <span className="addr-type-pill">{addr.type}</span>
@@ -544,7 +558,8 @@ export function AccountView({
                 <span className="eyebrow">Delivery & Shipping</span>
                 <h1>Saved Addresses</h1>
                 <p className="pane-sub">
-                  Manage your delivery destinations for bespoke tailor deliveries.
+                  Manage your delivery destinations for bespoke tailor
+                  deliveries.
                 </p>
               </div>
               <Button onClick={handleOpenAddAddress}>
@@ -557,7 +572,8 @@ export function AccountView({
                 <Icon name="map-pin" size={38} />
                 <h3>No addresses saved yet</h3>
                 <p>
-                  Add your home or work address for seamless, one-click checkout.
+                  Add your home or work address for seamless, one-click
+                  checkout.
                 </p>
                 <Button onClick={handleOpenAddAddress}>
                   <Icon name="plus" size={15} /> Add First Address
@@ -568,7 +584,9 @@ export function AccountView({
                 {addresses.map((addr) => (
                   <div
                     key={addr.id}
-                    className={`address-card-detailed ${addr.isDefault ? "is-default" : ""}`}
+                    className={`address-card-detailed ${
+                      addr.isDefault ? "is-default" : ""
+                    }`}
                   >
                     <div className="addr-header">
                       <div className="addr-tags">
@@ -576,8 +594,8 @@ export function AccountView({
                           {addr.type === "HOME"
                             ? "🏠 HOME"
                             : addr.type === "WORK"
-                            ? "🏢 WORK"
-                            : "📍 OTHER"}
+                              ? "🏢 WORK"
+                              : "📍 OTHER"}
                         </span>
                         {addr.isDefault && (
                           <span className="default-tag">
@@ -601,7 +619,7 @@ export function AccountView({
                           onClick={() => {
                             if (
                               window.confirm(
-                                `Delete address for "${addr.name}"?`
+                                `Delete address for "${addr.name}"?`,
                               )
                             ) {
                               onDeleteAddress(addr.id)
@@ -620,9 +638,15 @@ export function AccountView({
                       <h4 className="addr-recipient">{addr.name}</h4>
                       <p className="addr-lines">
                         {addr.street}
-                        {addr.area && <><br />{addr.area}</>}
+                        {addr.area && (
+                          <>
+                            <br />
+                            {addr.area}
+                          </>
+                        )}
                         <br />
-                        {addr.city}, {addr.state} - <strong>{addr.pincode}</strong>
+                        {addr.city}, {addr.state} -{" "}
+                        <strong>{addr.pincode}</strong>
                       </p>
                       <div className="addr-phone">
                         <Icon name="phone" size={13} />
@@ -688,10 +712,15 @@ export function AccountView({
               <Icon name="shield" size={32} />
               <h3>Concierge Assistance</h3>
               <p>
-                Our personal tailoring specialists are available 24/7 for bespoke
-                sizing adjustments, private consultations, and return dispatches.
+                Our personal tailoring specialists are available 24/7 for
+                bespoke sizing adjustments, private consultations, and return
+                dispatches.
               </p>
-              <Button onClick={() => showToast("A specialist will contact you shortly!")}>
+              <Button
+                onClick={() =>
+                  showToast("A specialist will contact you shortly!")
+                }
+              >
                 Request Concierge Call
               </Button>
             </div>
@@ -808,14 +837,16 @@ export function AccountView({
                   <button
                     key={t}
                     type="button"
-                    className={`type-pill-btn ${addrType === t ? "active" : ""}`}
+                    className={`type-pill-btn ${
+                      addrType === t ? "active" : ""
+                    }`}
                     onClick={() => setAddrType(t)}
                   >
                     {t === "HOME"
                       ? "🏠 Home"
                       : t === "WORK"
-                      ? "🏢 Work / Office"
-                      : "📍 Other"}
+                        ? "🏢 Work / Office"
+                        : "📍 Other"}
                   </button>
                 ))}
               </div>
@@ -948,7 +979,7 @@ export function AccountView({
                     value={addrPincode}
                     onChange={(e) =>
                       setAddrPincode(
-                        e.target.value.replace(/\D/g, "").slice(0, 6)
+                        e.target.value.replace(/\D/g, "").slice(0, 6),
                       )
                     }
                     placeholder="400050"

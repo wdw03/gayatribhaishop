@@ -25,7 +25,9 @@ export function ProductCard({
   // Drag / Swipe / Touch state tracking
   const mouseStartX = useRef<number | null>(null)
   const isMouseDragging = useRef<boolean>(false)
-  const touchStartPos = useRef<{ x: number; y: number; time: number } | null>(null)
+  const touchStartPos = useRef<{ x: number y: number time: number } | null>(
+    null,
+  )
   const isHorizontalSwipe = useRef<boolean>(false)
   const touchOpenedRef = useRef<boolean>(false)
 
@@ -293,7 +295,22 @@ export function ProductCard({
           </button>
         </div>
 
-        {/* Quick Actions (Quick view & Quick add) */}
+        {/* Mobile Quick Add Floating Button */}
+        <button
+          type="button"
+          className="mobile-quick-add-btn"
+          onClick={(e) => {
+            e.stopPropagation()
+            onAdd()
+          }}
+          aria-label={`Add ${product.name} to bag`}
+          title="Quick add to bag"
+        >
+          <Icon name="bag" size={12} />
+          <span>+ Add</span>
+        </button>
+
+        {/* Desktop Quick Actions (Quick view & Quick add) */}
         <div
           className="quick-actions"
           onClick={(e) => e.stopPropagation()}
@@ -321,7 +338,7 @@ export function ProductCard({
 
       <div className="product-info" onClick={onOpen}>
         <div className="product-meta">
-          <span>{product.category}</span>
+          <span className="product-category-tag">{product.category}</span>
           <span className="rating">
             <Icon name="star" size={12} filled /> {product.rating} (
             {product.reviews})
@@ -329,11 +346,38 @@ export function ProductCard({
         </div>
         <h3>{product.name}</h3>
         <div className="price">
-          <strong>{money(product.price)}</strong>
-          <s>{money(product.mrp)}</s>
-          <span>{product.discount}% off</span>
+          <strong className="current-price">{money(product.price)}</strong>
+          <s className="original-price">{money(product.mrp)}</s>
+          <span className="discount-tag">{product.discount}% off</span>
         </div>
-        <p>{product.color} · Cotton linen</p>
+        <p className="product-fabric">{product.color} · Cotton linen</p>
+
+        {/* 1-Column Feed View Mobile Action Bar */}
+        <div
+          className="mobile-feed-actions"
+          onClick={(e) => e.stopPropagation()}
+          onMouseDown={(e) => e.stopPropagation()}
+        >
+          <Button
+            variant="outline"
+            className="mobile-feed-btn"
+            onClick={(e) => {
+              e?.stopPropagation?.()
+              onOpen()
+            }}
+          >
+            Quick view
+          </Button>
+          <Button
+            className="mobile-feed-btn-primary"
+            onClick={(e) => {
+              e?.stopPropagation?.()
+              onAdd()
+            }}
+          >
+            <Icon name="bag" size={13} /> Add to bag
+          </Button>
+        </div>
       </div>
     </article>
   )

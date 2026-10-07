@@ -119,11 +119,7 @@ export function HomeView({
       </section>
 
       {/* Luxury Lookbook Reels in Motion */}
-      <ReelsSection
-        openProduct={openProduct}
-        addToCart={addToCart}
-        go={go}
-      />
+      <ReelsSection openProduct={openProduct} addToCart={addToCart} go={go} />
 
       <section className="story">
         <div className="story-images">

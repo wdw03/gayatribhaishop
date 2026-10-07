@@ -19,8 +19,11 @@ export function ReelsSection({
   go,
 }: ReelsSectionProps) {
   const [activeReelIndex, setActiveReelIndex] = useState<number | null>(null)
-  const [likesState, setLikesState] = useState<Record<string, { count: number; liked: boolean }>>(() => {
-    const initial: Record<string, { count: number; liked: boolean }> = {}
+  const [likesState, setLikesState] = useState<Record<string, {
+    count: number
+    liked: boolean
+  }>>(() => {
+    const initial: Record<string, { count: number liked: boolean }> = {}
     REELS_DATA.forEach((r) => {
       initial[r.id] = { count: r.likes, liked: false }
     })
@@ -68,7 +71,7 @@ export function ReelsSection({
 
   const nextReel = () => {
     if (activeReelIndex !== null) {
-      setActiveReelIndex((prev) => ((prev! + 1) % REELS_DATA.length))
+      setActiveReelIndex((prev) => (prev! + 1) % REELS_DATA.length)
       setIsPlaying(true)
     }
   }
@@ -97,8 +100,8 @@ export function ReelsSection({
           </span>
           <h2>Artisanal Looks in 4K</h2>
           <p>
-            Experience how our shirts drape, breathe, and catch the summer light.
-            Tap any reel to shop the complete look.
+            Experience how our shirts drape, breathe, and catch the summer
+            light. Tap any reel to shop the complete look.
           </p>
         </div>
         <div className="reels-header-action">
@@ -112,7 +115,10 @@ export function ReelsSection({
       <div className="reels-strip-track">
         {REELS_DATA.map((reel, index) => {
           const matchingProduct = products.find((p) => p.id === reel.productId)
-          const likeInfo = likesState[reel.id] || { count: reel.likes, liked: false }
+          const likeInfo = likesState[reel.id] || {
+            count: reel.likes,
+            liked: false,
+          }
 
           return (
             <article
@@ -186,8 +192,12 @@ export function ReelsSection({
                         className="pill-thumb"
                       />
                       <div className="pill-info">
-                        <strong className="pill-name">{matchingProduct.name}</strong>
-                        <span className="pill-price">{money(matchingProduct.price)}</span>
+                        <strong className="pill-name">
+                          {matchingProduct.name}
+                        </strong>
+                        <span className="pill-price">
+                          {money(matchingProduct.price)}
+                        </span>
                       </div>
                       <span className="pill-shop-badge">Shop →</span>
                     </div>
@@ -223,7 +233,9 @@ export function ReelsSection({
                 <span className="creator-avatar">A</span>
                 <div>
                   <strong>{activeReel.stylist}</strong>
-                  <small>{activeReel.tag} · {activeReel.views} views</small>
+                  <small>
+                    {activeReel.tag} · {activeReel.views} views
+                  </small>
                 </div>
               </div>
               <div className="reel-modal-header-actions">
@@ -292,7 +304,12 @@ export function ReelsSection({
                 onClick={prevReel}
                 aria-label="Previous reel"
               >
-                <span style={{ display: "inline-flex", transform: "rotate(180deg)" }}>
+                <span
+                  style={{
+                    display: "inline-flex",
+                    transform: "rotate(180deg)",
+                  }}
+                >
                   <Icon name="arrow" size={18} />
                 </span>
               </button>
@@ -323,7 +340,9 @@ export function ReelsSection({
                       }}
                     />
                     <div className="reel-product-details">
-                      <span className="category-pill">{activeProduct.category}</span>
+                      <span className="category-pill">
+                        {activeProduct.category}
+                      </span>
                       <strong
                         onClick={() => {
                           openProduct(activeProduct)

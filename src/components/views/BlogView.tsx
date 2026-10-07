@@ -81,7 +81,8 @@ export function BlogView({
   if (activeArticle) {
     const currentIndex = BLOG_POSTS.findIndex((p) => p.id === activeArticle.id)
     const prevPost = currentIndex > 0 ? BLOG_POSTS[currentIndex - 1] : null
-    const nextPost = currentIndex < BLOG_POSTS.length - 1 ? BLOG_POSTS[currentIndex + 1] : null
+    const nextPost =
+      currentIndex < BLOG_POSTS.length - 1 ? BLOG_POSTS[currentIndex + 1] : null
 
     return (
       <div className="full-page-article-view">
@@ -138,7 +139,9 @@ export function BlogView({
             </div>
 
             <h1 className="article-editorial-title">{activeArticle.title}</h1>
-            <p className="article-editorial-subtitle">{activeArticle.subtitle}</p>
+            <p className="article-editorial-subtitle">
+              {activeArticle.subtitle}
+            </p>
 
             {/* Author Profile Card */}
             <div className="article-author-card">
@@ -160,7 +163,8 @@ export function BlogView({
               className="article-hero-cover-img"
             />
             <span className="article-cover-caption">
-              Field Study · Master Craftsmanship & Natural Linen Cultivation at the AVYR Atelier
+              Field Study · Master Craftsmanship & Natural Linen Cultivation at
+              the AVYR Atelier
             </span>
           </div>
 
@@ -208,7 +212,10 @@ export function BlogView({
               <div className="featured-shirts-head">
                 <span className="eyebrow">From This Story</span>
                 <h3>Artisanal Shirts Featured in This Essay</h3>
-                <p>Designed with the exact embroidery techniques and linen weights explored above.</p>
+                <p>
+                  Designed with the exact embroidery techniques and linen
+                  weights explored above.
+                </p>
               </div>
 
               <div className="featured-shirts-grid">
@@ -222,10 +229,14 @@ export function BlogView({
                         onClick={() => openProduct(product)}
                       >
                         <img src={product.images[0]} alt={product.name} />
-                        <span className="shirt-badge">{product.badge || "Handcrafted"}</span>
+                        <span className="shirt-badge">
+                          {product.badge || "Handcrafted"}
+                        </span>
                       </div>
                       <div className="shirt-card-body">
-                        <small className="shirt-category">{product.category}</small>
+                        <small className="shirt-category">
+                          {product.category}
+                        </small>
                         <strong
                           className="shirt-title"
                           onClick={() => openProduct(product)}
@@ -233,9 +244,13 @@ export function BlogView({
                           {product.name}
                         </strong>
                         <div className="shirt-price-row">
-                          <span className="shirt-price">{money(product.price)}</span>
+                          <span className="shirt-price">
+                            {money(product.price)}
+                          </span>
                           {product.compareAtPrice && (
-                            <s className="shirt-old-price">{money(product.compareAtPrice)}</s>
+                            <s className="shirt-old-price">
+                              {money(product.compareAtPrice)}
+                            </s>
                           )}
                         </div>
                         <div className="shirt-actions-row">
@@ -268,7 +283,7 @@ export function BlogView({
             <div className="share-buttons-row">
               <a
                 href={`https://api.whatsapp.com/send?text=${encodeURIComponent(
-                  `Read this insightful menswear essay: "${activeArticle.title}" on AVYR Journal:\n${window.location.href}`
+                  `Read this insightful menswear essay: "${activeArticle.title}" on AVYR Journal:\n${window.location.href}`,
                 )}`}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -278,7 +293,7 @@ export function BlogView({
               </a>
               <a
                 href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
-                  `"${activeArticle.title}" - A thoughtful exploration from AVYR Atelier Journal.`
+                  `"${activeArticle.title}" - A thoughtful exploration from AVYR Atelier Journal.`,
                 )}&url=${encodeURIComponent(window.location.href)}`}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -308,7 +323,9 @@ export function BlogView({
               >
                 <span className="nav-story-direction">← Previous Essay</span>
                 <h4>{prevPost.title}</h4>
-                <small>{prevPost.readTime} · {prevPost.category}</small>
+                <small>
+                  {prevPost.readTime} · {prevPost.category}
+                </small>
               </div>
             ) : (
               <div />
@@ -324,7 +341,9 @@ export function BlogView({
               >
                 <span className="nav-story-direction">Next Essay →</span>
                 <h4>{nextPost.title}</h4>
-                <small>{nextPost.readTime} · {nextPost.category}</small>
+                <small>
+                  {nextPost.readTime} · {nextPost.category}
+                </small>
               </div>
             ) : (
               <div />
@@ -366,8 +385,9 @@ export function BlogView({
         </div>
         <h1>Essays on Craft, Linen & Modern Style</h1>
         <p className="blog-hero-lead">
-          Thoughtful explorations of hand-guided embroidery, European flax cultivation,
-          and relaxed Riviera menswear, penned by our designers and master karigars in Surat.
+          Thoughtful explorations of hand-guided embroidery, European flax
+          cultivation, and relaxed Riviera menswear, penned by our designers and
+          master karigars in Surat.
         </p>
 
         {/* Category Tabs */}
@@ -376,7 +396,9 @@ export function BlogView({
             <button
               key={cat}
               type="button"
-              className={`blog-cat-btn ${selectedCategory === cat ? "active" : ""}`}
+              className={`blog-cat-btn ${
+                selectedCategory === cat ? "active" : ""
+              }`}
               onClick={() => setSelectedCategory(cat)}
             >
               {cat}
@@ -414,7 +436,9 @@ export function BlogView({
             <p className="featured-excerpt">{featuredPost.excerpt}</p>
             <div className="featured-footer-row">
               <div className="author-pill">
-                <span className="author-avatar">{featuredPost.author.avatar}</span>
+                <span className="author-avatar">
+                  {featuredPost.author.avatar}
+                </span>
                 <div>
                   <strong>{featuredPost.author.name}</strong>
                   <small>{featuredPost.author.role}</small>
@@ -483,9 +507,10 @@ export function BlogView({
           <Icon name="sparkles" size={20} />
           <h4>Craftsmanship as a Living Philosophy</h4>
           <p>
-            Every piece at AVYR begins with patient conversations between our textile designers
-            and artisan communities. We document our journey not merely to celebrate menswear,
-            but to preserve slow, mindful tailoring for modern generations.
+            Every piece at AVYR begins with patient conversations between our
+            textile designers and artisan communities. We document our journey
+            not merely to celebrate menswear, but to preserve slow, mindful
+            tailoring for modern generations.
           </p>
           <Button variant="outline" onClick={() => go("shop")}>
             Explore Our Handcrafted Collection →

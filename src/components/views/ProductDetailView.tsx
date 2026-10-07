@@ -45,8 +45,8 @@ export function ProductDetailView({
   const [pincode, setPincode] = useState("")
   const [checked, setChecked] = useState(false)
 
-  const touchStartPos = useRef<{ x: number; y: number } | null>(null)
-  const touchMovePos = useRef<{ x: number; y: number } | null>(null)
+  const touchStartPos = useRef<{ x: number y: number } | null>(null)
+  const touchMovePos = useRef<{ x: number y: number } | null>(null)
 
   useEffect(() => setImage(0), [product])
 
@@ -202,7 +202,9 @@ export function ProductDetailView({
         <button
           type="button"
           className="product-back-btn"
-          onClick={() => (goBack ? goBack() : go ? go("shop") : window.history.back())}
+          onClick={() =>
+            goBack ? goBack() : go ? go("shop") : window.history.back()
+          }
           aria-label="Go back to collection"
         >
           <span style={{ display: "inline-flex", transform: "rotate(180deg)" }}>
@@ -396,7 +398,9 @@ export function ProductDetailView({
                 <span className="selected-size-label">· Size {size}</span>
               ) : (
                 sizeError && (
-                  <span className="size-required-badge">Please choose a size</span>
+                  <span className="size-required-badge">
+                    Please choose a size
+                  </span>
                 )
               )}
             </div>
@@ -432,10 +436,7 @@ export function ProductDetailView({
 
           {/* Action buttons: Add to bag, Wishlist & Dedicated Share Button */}
           <div className="detail-actions">
-            <Button
-              className="add-bag"
-              onClick={handleAddToCart}
-            >
+            <Button className="add-bag" onClick={handleAddToCart}>
               {size ? "Add to bag" : "Select size"} <Icon name="bag" />
             </Button>
             <Button
@@ -523,7 +524,11 @@ export function ProductDetailView({
             <strong>{money(product.price)}</strong>
             <s>{money(product.mrp)}</s>
           </div>
-          <span className={`mobile-sticky-size ${sizeError && !size ? "size-error-text" : ""}`}>
+          <span
+            className={`mobile-sticky-size ${
+              sizeError && !size ? "size-error-text" : ""
+            }`}
+          >
             {size ? `Size: ${size}` : "Select size"}
           </span>
         </div>

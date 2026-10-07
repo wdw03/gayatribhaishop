@@ -41,6 +41,25 @@ export function ShopView({
       // ignore
     }
   }
+
+  // Mobile layout mode: 2 (compact grid) or 1 (large single column feed)
+  const [mobileCols, setMobileCols] = useState<1 | 2>(() => {
+    try {
+      const saved = localStorage.getItem("avyr-mobile-grid-cols")
+      return saved === "1" ? 1 : 2
+    } catch {
+      return 2
+    }
+  })
+
+  const handleColsChange = (cols: 1 | 2) => {
+    setMobileCols(cols)
+    try {
+      localStorage.setItem("avyr-mobile-grid-cols", String(cols))
+    } catch {
+      // ignore
+    }
+  }
   const [category, setCategory] = useState("All Shirts")
   const [size, setSize] = useState("")
   const [priceRange, setPriceRange] = useState("")
@@ -142,7 +161,7 @@ export function ShopView({
         category === "Linen"
           ? p.fabric.toLowerCase().includes("linen")
           : p.category.toLowerCase().includes(category.toLowerCase()) ||
-          p.name.toLowerCase().includes(category.toLowerCase()),
+            p.name.toLowerCase().includes(category.toLowerCase()),
       )
     }
 
@@ -349,11 +368,42 @@ export function ShopView({
           <span>
             Showing <strong>{list.length}</strong> of {products.length} shirts
           </span>
-          {hasActiveFilters && (
-            <span className="active-filter-indicator">
-              ({activeFilterCount} active)
-            </span>
-          )}
+          <div className="catalog-count-right-group">
+            {hasActiveFilters && (
+              <span className="active-filter-indicator">
+                ({activeFilterCount} active)
+              </span>
+            )}
+            {/* Mobile 1-Col vs 2-Col View Switcher */}
+            <div
+              className="mobile-view-switcher mobile-only"
+              role="group"
+              aria-label="Grid layout"
+            >
+              <button
+                type="button"
+                className={`view-switcher-btn ${
+                  mobileCols === 1 ? "active" : ""
+                }`}
+                onClick={() => handleColsChange(1)}
+                title="Single column large view"
+                aria-label="Single column large view"
+              >
+                <Icon name="grid-1" size={13} />
+              </button>
+              <button
+                type="button"
+                className={`view-switcher-btn ${
+                  mobileCols === 2 ? "active" : ""
+                }`}
+                onClick={() => handleColsChange(2)}
+                title="Two columns grid view"
+                aria-label="Two columns grid view"
+              >
+                <Icon name="grid-2" size={13} />
+              </button>
+            </div>
+          </div>
         </div>
 
         <div className="catalog-actions-wrap">
@@ -367,7 +417,9 @@ export function ShopView({
             <div className="switcher-pills">
               <button
                 type="button"
-                className={`switcher-pill ${filterPosition === "left" ? "active" : ""}`}
+                className={`switcher-pill ${
+                  filterPosition === "left" ? "active" : ""
+                }`}
                 onClick={() => handlePositionChange("left")}
                 title="Keep filter sidebar on Left (Sticky)"
               >
@@ -376,7 +428,9 @@ export function ShopView({
               </button>
               <button
                 type="button"
-                className={`switcher-pill ${filterPosition === "right" ? "active" : ""}`}
+                className={`switcher-pill ${
+                  filterPosition === "right" ? "active" : ""
+                }`}
                 onClick={() => handlePositionChange("right")}
                 title="Move filter sidebar to Right (Sticky)"
               >
@@ -596,7 +650,7 @@ export function ShopView({
           {list.length > 0 ? (
             <div
               key={`${category}-${size}-${priceRange}-${selectedColors.join(",")}-${selectedFit}-${selectedSleeve}-${selectedCollar}-${selectedPattern}-${selectedFabric}-${selectedOccasion}-${minDiscount}-${minRating}-${availability}-${sort}`}
-              className="product-grid shop-grid"
+              className={`product-grid shop-grid mobile-cols-${mobileCols}`}
             >
               {list.slice(0, visible).map((p) => (
                 <ProductCard
