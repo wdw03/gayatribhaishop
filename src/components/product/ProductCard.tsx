@@ -1,7 +1,6 @@
 import React, { useRef, useState } from "react"
 import type { Product } from "../../types"
 import { money } from "../../utils/format"
-import Button from "../common/Button"
 import Icon from "../common/Icon"
 
 export interface ProductCardProps {
@@ -21,6 +20,14 @@ export function ProductCard({
 }: ProductCardProps) {
   const [imgIndex, setImgIndex] = useState(0)
   const [copied, setCopied] = useState(false)
+  const [isAdded, setIsAdded] = useState(false)
+
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    onAdd()
+    setIsAdded(true)
+    setTimeout(() => setIsAdded(false), 1600)
+  }
 
   // Drag / Swipe / Touch state tracking
   const mouseStartX = useRef<number | null>(null)
@@ -294,53 +301,13 @@ export function ProductCard({
             {copied && <span className="card-copied-tag">Copied!</span>}
           </button>
         </div>
-
-        {/* Mobile Quick Add Floating Button */}
-        <button
-          type="button"
-          className="mobile-quick-add-btn"
-          onClick={(e) => {
-            e.stopPropagation()
-            onAdd()
-          }}
-          aria-label={`Add ${product.name} to bag`}
-          title="Quick add to bag"
-        >
-          <Icon name="bag" size={12} />
-          <span>+ Add</span>
-        </button>
-
-        {/* Desktop Quick Actions (Quick view & Quick add) */}
-        <div
-          className="quick-actions"
-          onClick={(e) => e.stopPropagation()}
-          onMouseDown={(e) => e.stopPropagation()}
-        >
-          <Button
-            variant="light"
-            onClick={(e) => {
-              e?.stopPropagation?.()
-              onOpen()
-            }}
-          >
-            Quick view
-          </Button>
-          <Button
-            onClick={(e) => {
-              e?.stopPropagation?.()
-              onAdd()
-            }}
-          >
-            Quick add
-          </Button>
-        </div>
       </div>
 
       <div className="product-info" onClick={onOpen}>
         <div className="product-meta">
           <span className="product-category-tag">{product.category}</span>
           <span className="rating">
-            <Icon name="star" size={12} filled /> {product.rating} (
+            <Icon name="star" size={11} filled /> {product.rating} (
             {product.reviews})
           </span>
         </div>
@@ -352,31 +319,21 @@ export function ProductCard({
         </div>
         <p className="product-fabric">{product.color} · Cotton linen</p>
 
-        {/* 1-Column Feed View Mobile Action Bar */}
+        {/* Dedicated Modern Add To Bag Action */}
         <div
-          className="mobile-feed-actions"
+          className="product-card-action"
           onClick={(e) => e.stopPropagation()}
           onMouseDown={(e) => e.stopPropagation()}
         >
-          <Button
-            variant="outline"
-            className="mobile-feed-btn"
-            onClick={(e) => {
-              e?.stopPropagation?.()
-              onOpen()
-            }}
+          <button
+            type="button"
+            className={`card-add-to-bag-btn ${isAdded ? "added" : ""}`}
+            onClick={handleAddToCart}
+            aria-label={`Add ${product.name} to bag`}
           >
-            Quick view
-          </Button>
-          <Button
-            className="mobile-feed-btn-primary"
-            onClick={(e) => {
-              e?.stopPropagation?.()
-              onAdd()
-            }}
-          >
-            <Icon name="bag" size={13} /> Add to bag
-          </Button>
+            <Icon name={isAdded ? "check" : "bag"} size={13} />
+            <span>{isAdded ? "Added to Bag" : "Add to Bag"}</span>
+          </button>
         </div>
       </div>
     </article>
