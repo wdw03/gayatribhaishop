@@ -1888,11 +1888,11 @@ footer > div > button { border: 0; background: none; color: #9ba69e; padding: 0;
     display: none !important;
   }
 
-  /* Badge and Low-stock moved to bottom-left away from face/collar */
+  /* Badge and Low-stock positioned above dots line - zero overlap */
   .card-badge-wrap {
     position: absolute !important;
-    bottom: 8px !important;
-    left: 8px !important;
+    bottom: 22px !important;
+    left: 7px !important;
     z-index: 10 !important;
     display: flex !important;
     flex-direction: column !important;
@@ -1934,25 +1934,26 @@ footer > div > button { border: 0; background: none; color: #9ba69e; padding: 0;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08) !important;
   }
 
-  /* Dots on bottom right on mobile */
+  /* Sleek compact dots at very bottom center of photo */
   .card-mini-dots {
     opacity: 1 !important;
-    bottom: 8px !important;
-    right: 8px !important;
-    left: auto !important;
-    transform: none !important;
-    padding: 3px 6px !important;
+    bottom: 6px !important;
+    left: 50% !important;
+    right: auto !important;
+    transform: translateX(-50%) !important;
+    padding: 2.5px 5px !important;
+    gap: 3px !important;
     background: rgba(14, 28, 20, 0.55) !important;
     backdrop-filter: blur(6px) !important;
     -webkit-backdrop-filter: blur(6px) !important;
     border-radius: 10px !important;
   }
   .card-dot {
-    width: 4.5px !important;
-    height: 4.5px !important;
+    width: 4px !important;
+    height: 4px !important;
   }
   .card-dot.active {
-    width: 12px !important;
+    width: 10px !important;
   }
 
   /* Mobile Bottom Action: Add to Bag (flex: 1) + Wishlist side-by-side */
