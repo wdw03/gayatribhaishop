@@ -1817,14 +1817,57 @@ footer > div > button { border: 0; background: none; color: #9ba69e; padding: 0;
   .announcement-ticker { max-width: 100%; }
   .ticker-text { font-size: 9.5px; }
   .ticker-highlight { font-size: 8px; }
-  .header { height: 64px; }
-  .header-inner { padding: 0 14px; }
-  .logo-title { font-size: 22px; }
-  .logo-sub { font-size: 5.5px; }
-  .logo-spark { width: 28px; height: 28px; }
-  .logo-mark { font-size: 16px; }
-  .header-actions { gap: 6px; }
-  .action-icon-btn { width: 36px; height: 36px; }
+  .header { height: 60px !important; }
+  .header-inner {
+    padding: 0 12px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+  }
+  .mobile-toggle {
+    display: grid !important;
+    width: 38px !important;
+    height: 38px !important;
+    flex-shrink: 0 !important;
+  }
+  .logo {
+    display: flex !important;
+    align-items: center !important;
+    margin: 0 !important;
+    margin-left: 6px !important;
+    margin-right: auto !important;
+    flex-shrink: 0 !important;
+  }
+  .logo-spark {
+    width: 32px !important;
+    height: 32px !important;
+    border-radius: 7px !important;
+  }
+  .logo-mark {
+    font-size: 18px !important;
+  }
+  .logo-text-group {
+    display: none !important;
+  }
+  .header-actions {
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    margin-left: auto !important;
+    flex-shrink: 0 !important;
+  }
+  .header .wishlist-icon-btn {
+    display: none !important;
+  }
+  .action-icon-btn {
+    width: 36px !important;
+    height: 36px !important;
+    flex-shrink: 0 !important;
+  }
+  .header-user-avatar {
+    width: 24px !important;
+    height: 24px !important;
+  }
   .hero { min-height: calc(100svh - 91px); display: block; }
   .hero-images { position: absolute; inset: 0; }
   .hero-images::after { background: linear-gradient(0deg,rgba(17,31,23,.96),rgba(17,31,23,.15) 85%); }
