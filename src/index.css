@@ -735,10 +735,13 @@ h1, h2 { font-family: "Italiana", Georgia, serif; font-weight: 400; }
   font-weight: 600;
   letter-spacing: 0.05em;
   text-transform: uppercase;
+  white-space: nowrap;
   cursor: pointer;
   transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
+.card-add-to-bag-btn svg { flex-shrink: 0; }
+.card-add-to-bag-btn span { white-space: nowrap; }
 .card-add-to-bag-btn:hover {
   background: var(--forest);
   border-color: var(--forest);
@@ -1952,20 +1955,23 @@ footer > div > button { border: 0; background: none; color: #9ba69e; padding: 0;
     width: 12px !important;
   }
 
-  /* Mobile Bottom Action: Add to Bag (flex: 1) + Wishlist (36px) side-by-side */
+  /* Mobile Bottom Action: Add to Bag (flex: 1) + Wishlist side-by-side */
   .product-card-action {
     display: flex !important;
+    flex-wrap: nowrap !important;
     align-items: center !important;
-    gap: 6px !important;
-    margin-top: 10px !important;
+    gap: 5px !important;
+    margin-top: 8px !important;
     width: 100% !important;
+    box-sizing: border-box !important;
   }
   .card-add-to-bag-btn {
-    flex: 1 1 auto !important;
+    flex: 1 1 0% !important;
+    min-width: 0 !important;
     width: auto !important;
-    min-height: 36px !important;
-    height: 36px !important;
-    padding: 0 10px !important;
+    min-height: 35px !important;
+    height: 35px !important;
+    padding: 0 6px !important;
     border-radius: 6px !important;
     border: none !important;
     background: var(--ink) !important;
@@ -1973,13 +1979,27 @@ footer > div > button { border: 0; background: none; color: #9ba69e; padding: 0;
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
-    gap: 6px !important;
-    font-size: 11px !important;
+    gap: 4px !important;
+    font-size: 10px !important;
     font-weight: 600 !important;
-    letter-spacing: 0.04em !important;
+    letter-spacing: 0.02em !important;
+    white-space: nowrap !important;
     cursor: pointer !important;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
     transition: transform 0.15s ease, background 0.15s ease !important;
+    box-sizing: border-box !important;
+  }
+  .card-add-to-bag-btn svg {
+    flex-shrink: 0 !important;
+    width: 12px !important;
+    height: 12px !important;
+  }
+  .card-add-to-bag-btn span {
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    line-height: 1 !important;
+    display: inline-block !important;
   }
   .card-add-to-bag-btn:active {
     transform: scale(0.96) !important;
@@ -1993,10 +2013,10 @@ footer > div > button { border: 0; background: none; color: #9ba69e; padding: 0;
 
   .card-wish-action-btn {
     display: inline-flex !important;
-    flex: 0 0 36px !important;
-    width: 36px !important;
-    min-width: 36px !important;
-    height: 36px !important;
+    flex: 0 0 34px !important;
+    width: 34px !important;
+    min-width: 34px !important;
+    height: 35px !important;
     border-radius: 6px !important;
     border: 1px solid rgba(0, 0, 0, 0.1) !important;
     background: #fbfaf8 !important;
@@ -2006,6 +2026,12 @@ footer > div > button { border: 0; background: none; color: #9ba69e; padding: 0;
     cursor: pointer !important;
     transition: all 0.18s ease !important;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04) !important;
+    box-sizing: border-box !important;
+  }
+  .card-wish-action-btn svg {
+    flex-shrink: 0 !important;
+    width: 14px !important;
+    height: 14px !important;
   }
   .card-wish-action-btn:active {
     transform: scale(0.92) !important;
