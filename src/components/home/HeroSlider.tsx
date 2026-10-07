@@ -28,18 +28,13 @@ const SLIDES: SlideData[] = [
     eyebrow: "Summer Atelier 2026",
     title: "Artisanal Linen",
     italicTitle: "woven by hand.",
-    description:
-      "Hand-embroidered pure linen shirts, tailored for sunlit days.",
+    description: "Pure linen, handcrafted in small batches.",
     desktopImage: "/assets/site_banners/slide1_desktop.jpg",
     mobileImage: "/assets/site_banners/slide1_mobile.jpg",
     tag: "SUMMER ATELIER",
     badge: "Limited Edition",
-    locationNote: "HANDCRAFTED IN INDIA · EST. 2024",
-    stats: [
-      { val: "100%", label: "Pure Linen" },
-      { val: "23", label: "Artisan Cuts" },
-      { val: "48h", label: "Dispatch" },
-    ],
+    locationNote: "HANDCRAFTED IN INDIA",
+    stats: [],
     ctaText: "Shop Collection",
     secondaryCta: "Explore Edit",
   },
@@ -47,19 +42,14 @@ const SLIDES: SlideData[] = [
     id: 2,
     eyebrow: "The Resort Edit",
     title: "Coastal State",
-    italicTitle: "ocean breeze tailoring.",
-    description:
-      "Airy cuban collars with shoreline botanical motifs.",
+    italicTitle: "ocean breeze.",
+    description: "Airy cuban collars for summer days.",
     desktopImage: "/assets/site_banners/slide2_desktop.jpg",
     mobileImage: "/assets/site_banners/slide2_mobile.jpg",
     tag: "COASTAL RESORT",
     badge: "Artisan Series",
-    locationNote: "MEDITERRANEAN MEETS CRAFT",
-    stats: [
-      { val: "18", label: "Resort Cuts" },
-      { val: "Pure", label: "French Linen" },
-      { val: "Zero", label: "Synthetics" },
-    ],
+    locationNote: "RESORT COLLECTION",
+    stats: [],
     ctaText: "Shop Resort",
     secondaryCta: "View Lookbook",
   },
@@ -67,19 +57,14 @@ const SLIDES: SlideData[] = [
     id: 3,
     eyebrow: "Private Atelier",
     title: "After Dark",
-    italicTitle: "made to stand apart.",
-    description:
-      "Midnight dyes and tone-on-tone embroidery with gold accents.",
+    italicTitle: "evening tailoring.",
+    description: "Midnight tones with gold stitch finish.",
     desktopImage: "/assets/site_banners/slide3_desktop.jpg",
     mobileImage: "/assets/site_banners/slide3_mobile.jpg",
     tag: "AFTER DARK",
     badge: "Private Vault",
-    locationNote: "LUXURY STATEMENT SILHOUETTES",
-    stats: [
-      { val: "12", label: "Private Drops" },
-      { val: "Silk", label: "Cotton Blend" },
-      { val: "Gold", label: "Stitch Finish" },
-    ],
+    locationNote: "EVENING EDIT",
+    stats: [],
     ctaText: "Shop Evening",
     secondaryCta: "View Vault",
   },
@@ -387,7 +372,6 @@ export function HeroSlider({ go, openProduct, products }: HeroSliderProps) {
         <div className="hero-slide-copy" ref={textContainerRef}>
           <div className="eyebrow-row">
             <span className="eyebrow light slide-eyebrow">{slide.eyebrow}</span>
-            <span className="slide-badge-pill">{slide.badge}</span>
           </div>
 
           <h1 className="slide-title">
@@ -405,27 +389,6 @@ export function HeroSlider({ go, openProduct, products }: HeroSliderProps) {
             >
               {slide.ctaText} <Icon name="arrow" />
             </Button>
-            <Button
-              variant="outline"
-              onClick={() => {
-                if (products[current * 4] || products[0]) {
-                  openProduct(products[current * 4] || products[0])
-                } else {
-                  go("shop")
-                }
-              }}
-              className="slider-secondary-btn"
-            >
-              {slide.secondaryCta}
-            </Button>
-          </div>
-
-          <div className="hero-proof slide-proof">
-            {slide.stats.map((st) => (
-              <span key={st.label}>
-                <strong>{st.val}</strong> {st.label}
-              </span>
-            ))}
           </div>
         </div>
 
@@ -443,19 +406,9 @@ export function HeroSlider({ go, openProduct, products }: HeroSliderProps) {
                 loading="eager"
               />
             </picture>
-
-            {/* Inset Detail Badge */}
-            <div className="slide-floating-badge">
-              <span className="badge-tag">{slide.tag}</span>
-              <strong className="badge-edition">Atelier 2026</strong>
-              <small>Pure Natural Craft</small>
-            </div>
           </div>
         </div>
       </div>
-
-      {/* Vertical Brand Identity Stamp */}
-      <span className="vertical-note">{slide.locationNote}</span>
 
       {/* Bottom Slider Control Bar */}
       <div className="slider-controls-bar">
