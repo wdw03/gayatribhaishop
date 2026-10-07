@@ -3456,8 +3456,11 @@ footer > div > button { border: 0; background: none; color: #9ba69e; padding: 0;
   .slide-actions .btn {
     flex: 1;
     min-height: 38px;
-    font-size: 8px;
+    font-size: 10px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.04em !important;
     padding: 0 10px;
+    white-space: nowrap;
   }
 
   .slide-proof {
