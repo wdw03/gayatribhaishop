@@ -1,6 +1,6 @@
-import React, { useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { products } from "../../products"
-import type { Address, User, View } from "../../types"
+import type { Address, IconName, User, View } from "../../types"
 import { money } from "../../utils/format"
 import Button from "../common/Button"
 import Icon from "../common/Icon"
@@ -130,6 +130,52 @@ export function AccountView({
     "Coupons",
     "Help & Support",
   ]
+
+  const tabIcons: Record<string, IconName> = {
+    Profile: "user",
+    Addresses: "map-pin",
+    Orders: "bag",
+    "Track Order": "truck",
+    Wishlist: "heart",
+    Coupons: "star",
+    "Help & Support": "shield",
+  }
+
+  const tabsScrollRef = useRef<HTMLDivElement>(null)
+  const [canScrollTabsLeft, setCanScrollTabsLeft] = useState(false)
+  const [canScrollTabsRight, setCanScrollTabsRight] = useState(true)
+
+  const checkTabsScroll = () => {
+    const el = tabsScrollRef.current
+    if (!el) return
+    setCanScrollTabsLeft(el.scrollLeft > 10)
+    setCanScrollTabsRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 10)
+  }
+
+  useEffect(() => {
+    const el = tabsScrollRef.current
+    if (!el) return
+    checkTabsScroll()
+    el.addEventListener("scroll", checkTabsScroll, { passive: true })
+    window.addEventListener("resize", checkTabsScroll)
+    return () => {
+      el.removeEventListener("scroll", checkTabsScroll)
+      window.removeEventListener("resize", checkTabsScroll)
+    }
+  }, [])
+
+  useEffect(() => {
+    const activeEl = tabsScrollRef.current?.querySelector(
+      ".account-nav-btn.active",
+    ) as HTMLElement | null
+    if (activeEl) {
+      activeEl.scrollIntoView({
+        behavior: "smooth",
+        inline: "center",
+        block: "nearest",
+      })
+    }
+  }, [tab])
 
   // If user is not logged in, show an inviting login prompt
   if (!user) {
@@ -331,29 +377,57 @@ export function AccountView({
           </div>
         </div>
 
-        {/* Tab Buttons */}
-        <nav className="account-nav-list" aria-label="Account Tabs">
-          {tabs.map((x) => (
-            <button
-              className={`account-nav-btn ${tab === x ? "active" : ""}`}
-              onClick={() => {
-                if (x === "Wishlist") {
-                  go("wishlist")
-                } else {
-                  setTab(x)
-                }
-              }}
-              key={x}
-              type="button"
+        {/* Tab Buttons (Scrollable Horizontal Pill Bar on Mobile) */}
+        <div className="account-tabs-container">
+          <div className="account-tabs-header-bar mobile-only">
+            <span className="account-tabs-label">Account Menu</span>
+            <span className="account-tabs-hint">
+              Swipe tabs <Icon name="arrow" size={10} />
+            </span>
+          </div>
+
+          <div className="account-tabs-scroll-track-wrap">
+            {canScrollTabsLeft && (
+              <div className="tabs-fade-left" aria-hidden="true" />
+            )}
+            <nav
+              className="account-nav-list"
+              ref={tabsScrollRef}
+              aria-label="Account Tabs"
             >
-              <span>{x}</span>
-              {x === "Addresses" && (
-                <b className="tab-pill-count">{addresses.length}</b>
-              )}
-              <Icon name="arrow" size={14} />
-            </button>
-          ))}
-        </nav>
+              {tabs.map((x) => (
+                <button
+                  className={`account-nav-btn ${tab === x ? "active" : ""}`}
+                  onClick={() => {
+                    if (x === "Wishlist") {
+                      go("wishlist")
+                    } else {
+                      setTab(x)
+                    }
+                  }}
+                  key={x}
+                  type="button"
+                >
+                  {tabIcons[x] && (
+                    <Icon
+                      name={tabIcons[x]}
+                      size={13}
+                      className="tab-btn-icon"
+                    />
+                  )}
+                  <span>{x}</span>
+                  {x === "Addresses" && (
+                    <b className="tab-pill-count">{addresses.length}</b>
+                  )}
+                  <Icon name="arrow" size={14} className="desktop-arrow" />
+                </button>
+              ))}
+            </nav>
+            {canScrollTabsRight && (
+              <div className="tabs-fade-right" aria-hidden="true" />
+            )}
+          </div>
+        </div>
 
         {/* Logout & Admin Action Buttons */}
         <div className="account-sidebar-actions">

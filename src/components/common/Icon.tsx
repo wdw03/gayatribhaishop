@@ -5,9 +5,15 @@ export interface IconProps {
   name: IconName
   size?: number
   filled?: boolean
+  className?: string
 }
 
-export function Icon({ name, size = 20, filled = false }: IconProps) {
+export function Icon({
+  name,
+  size = 20,
+  filled = false,
+  className,
+}: IconProps) {
   const paths: Record<IconName, React.ReactNode> = {
     search: (
       <>
@@ -186,6 +192,7 @@ export function Icon({ name, size = 20, filled = false }: IconProps) {
       strokeLinecap="round"
       strokeLinejoin="round"
       aria-hidden="true"
+      className={className}
     >
       {paths[name]}
     </svg>
