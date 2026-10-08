@@ -1,3 +1,5 @@
+"use client"
+
 import { useState } from "react"
 import type { User, View } from "../../types"
 import Button from "../common/Button"

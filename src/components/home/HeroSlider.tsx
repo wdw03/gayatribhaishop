@@ -1,3 +1,5 @@
+"use client"
+
 import React, { useEffect, useRef, useState } from "react"
 import { gsap } from "gsap"
 import type { Product, View } from "../../types"
@@ -15,7 +17,7 @@ export interface SlideData {
   tag: string
   badge: string
   locationNote: string
-  stats: { val: string label: string }[]
+  stats: { val: string; label: string }[]
   ctaText: string
   secondaryCta: string
   targetCategory?: string

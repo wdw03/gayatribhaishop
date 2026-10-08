@@ -1,3 +1,5 @@
+"use client"
+
 import React from "react"
 import { products } from "../../products"
 import type { CartItem, Product, View } from "../../types"

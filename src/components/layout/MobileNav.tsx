@@ -1,3 +1,5 @@
+"use client"
+
 import type { View } from "../../types"
 import Icon from "../common/Icon"
 

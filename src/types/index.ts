@@ -68,7 +68,7 @@ export interface ReelItem {
   stylist: string
 }
 
-export type IconName = "search" | "heart" | "bag" | "user" | "menu" | "close" | "arrow" | "star" | "filter" | "chevron" | "truck" | "shield" | "refresh" | "plus" | "minus" | "trash" | "check" | "share" | "edit" | "map-pin" | "mail" | "phone" | "lock" | "eye" | "eye-off" | "play" | "pause" | "volume" | "volume-mute" | "book-open" | "calendar" | "clock" | "award" | "sparkles" | "grid-1" | "grid-2"
+export type IconName = "search" | "heart" | "bag" | "user" | "menu" | "close" | "arrow" | "arrow-left" | "star" | "filter" | "sliders" | "chevron" | "truck" | "shield" | "refresh" | "plus" | "minus" | "trash" | "check" | "share" | "edit" | "map-pin" | "mail" | "phone" | "lock" | "eye" | "eye-off" | "play" | "pause" | "volume" | "volume-mute" | "book-open" | "calendar" | "clock" | "award" | "sparkles" | "grid-1" | "grid-2"
 
 export const categories = [
   "Contemporary",

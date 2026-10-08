@@ -1,3 +1,5 @@
+"use client"
+
 import React, { useRef, useState } from "react"
 import type { Product } from "../../types"
 import { money } from "../../utils/format"
@@ -32,7 +34,7 @@ export function ProductCard({
   // Drag / Swipe / Touch state tracking
   const mouseStartX = useRef<number | null>(null)
   const isMouseDragging = useRef<boolean>(false)
-  const touchStartPos = useRef<{ x: number y: number time: number } | null>(
+  const touchStartPos = useRef<{ x: number; y: number; time: number } | null>(
     null,
   )
   const isHorizontalSwipe = useRef<boolean>(false)

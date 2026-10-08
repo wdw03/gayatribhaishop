@@ -1,3 +1,5 @@
+"use client"
+
 import { products } from "../../products"
 import type { Product } from "../../types"
 import { money } from "../../utils/format"

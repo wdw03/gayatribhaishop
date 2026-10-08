@@ -1,3 +1,5 @@
+"use client"
+
 import React, { useEffect, useRef, useState } from "react"
 import { products } from "../../products"
 import type { Address, IconName, User, View } from "../../types"

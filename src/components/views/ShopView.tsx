@@ -1,3 +1,5 @@
+"use client"
+
 import { useEffect, useMemo, useState } from "react"
 import { products } from "../../products"
 import { allSizes, categories, type Product } from "../../types"

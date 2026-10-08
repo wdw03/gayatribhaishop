@@ -1,3 +1,5 @@
+"use client"
+
 import { useEffect, useRef, useState } from "react"
 import { products } from "../../products"
 import { allSizes, type Product } from "../../types"
@@ -44,9 +46,16 @@ export function ProductDetailView({
   const [copied, setCopied] = useState(false)
   const [pincode, setPincode] = useState("")
   const [checked, setChecked] = useState(false)
+  const [currentUrl, setCurrentUrl] = useState("")
 
-  const touchStartPos = useRef<{ x: number y: number } | null>(null)
-  const touchMovePos = useRef<{ x: number y: number } | null>(null)
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setCurrentUrl(window.location.href)
+    }
+  }, [])
+
+  const touchStartPos = useRef<{ x: number; y: number } | null>(null)
+  const touchMovePos = useRef<{ x: number; y: number } | null>(null)
 
   useEffect(() => setImage(0), [product])
 
@@ -616,7 +625,7 @@ export function ProductDetailView({
             <div className="share-social-grid">
               <a
                 href={`https://api.whatsapp.com/send?text=${encodeURIComponent(
-                  `Check out this handcrafted shirt: ${product.name} (${money(product.price)}) on AVYR:\n${window.location.href}`,
+                  `Check out this handcrafted shirt: ${product.name} (${money(product.price)}) on AVYR:\n${currentUrl}`,
                 )}`}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -628,7 +637,7 @@ export function ProductDetailView({
               <a
                 href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
                   `Handcrafted excellence: ${product.name} from AVYR Atelier.`,
-                )}&url=${encodeURIComponent(window.location.href)}`}
+                )}&url=${encodeURIComponent(currentUrl)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="social-share-link twitter"
@@ -638,7 +647,7 @@ export function ProductDetailView({
               </a>
               <a
                 href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
-                  window.location.href,
+                  currentUrl,
                 )}`}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -653,7 +662,7 @@ export function ProductDetailView({
               <input
                 type="text"
                 readOnly
-                value={window.location.href}
+                value={currentUrl}
                 className="share-link-input"
                 aria-label="Product link"
               />

@@ -1,3 +1,5 @@
+"use client"
+
 import React, { useState } from "react"
 import { products } from "../../products"
 import type { Address, CartItem, User, View } from "../../types"

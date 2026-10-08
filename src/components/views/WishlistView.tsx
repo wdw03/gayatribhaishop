@@ -1,3 +1,5 @@
+"use client"
+
 import { products } from "../../products"
 import type { Product, View } from "../../types"
 import Empty from "../common/Empty"

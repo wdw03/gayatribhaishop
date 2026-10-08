@@ -1,3 +1,5 @@
+"use client"
+
 import { products } from "../../products"
 import type { BlogPost, Product, View } from "../../types"
 import Button from "../common/Button"

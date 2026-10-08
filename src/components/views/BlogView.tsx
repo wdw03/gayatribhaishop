@@ -1,3 +1,5 @@
+"use client"
+
 import React, { useEffect, useState } from "react"
 import { BLOG_POSTS } from "../../data/blogData"
 import { products } from "../../products"
@@ -29,6 +31,13 @@ export function BlogView({
     return null
   })
   const [copied, setCopied] = useState(false)
+  const [currentUrl, setCurrentUrl] = useState("")
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setCurrentUrl(window.location.href)
+    }
+  }, [])
 
   // Sync when selectedBlogId changes from outside (e.g. from Home page click)
   useEffect(() => {
@@ -247,9 +256,9 @@ export function BlogView({
                           <span className="shirt-price">
                             {money(product.price)}
                           </span>
-                          {product.compareAtPrice && (
+                          {product.mrp && product.mrp > product.price && (
                             <s className="shirt-old-price">
-                              {money(product.compareAtPrice)}
+                              {money(product.mrp)}
                             </s>
                           )}
                         </div>
@@ -283,7 +292,7 @@ export function BlogView({
             <div className="share-buttons-row">
               <a
                 href={`https://api.whatsapp.com/send?text=${encodeURIComponent(
-                  `Read this insightful menswear essay: "${activeArticle.title}" on AVYR Journal:\n${window.location.href}`,
+                  `Read this insightful menswear essay: "${activeArticle.title}" on AVYR Journal:\n${currentUrl}`,
                 )}`}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -294,7 +303,7 @@ export function BlogView({
               <a
                 href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
                   `"${activeArticle.title}" - A thoughtful exploration from AVYR Atelier Journal.`,
-                )}&url=${encodeURIComponent(window.location.href)}`}
+                )}&url=${encodeURIComponent(currentUrl)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="social-share-pill twitter"

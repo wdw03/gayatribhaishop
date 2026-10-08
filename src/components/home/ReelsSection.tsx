@@ -1,3 +1,5 @@
+"use client"
+
 import React, { useRef, useState } from "react"
 import { REELS_DATA } from "../../data/reelsData"
 import { products } from "../../products"
@@ -23,7 +25,7 @@ export function ReelsSection({
     count: number
     liked: boolean
   }>>(() => {
-    const initial: Record<string, { count: number liked: boolean }> = {}
+    const initial: Record<string, { count: number; liked: boolean }> = {}
     REELS_DATA.forEach((r) => {
       initial[r.id] = { count: r.likes, liked: false }
     })
@@ -132,7 +134,9 @@ export function ReelsSection({
               <div className="reel-visual-frame">
                 {reel.videoUrl ? (
                   <video
-                    ref={(el) => (videoRefs.current[reel.id] = el)}
+                    ref={(el) => {
+                      videoRefs.current[reel.id] = el
+                    }}
                     src={reel.videoUrl}
                     poster={reel.posterUrl}
                     muted
